@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta chatset="utf-8"/>
+		<title>[% title | html %]</title>
+	</head>
+	<body>
+		<h1>[% title | html %]</h1>
+		[% body %]
+	</body>
+</html>

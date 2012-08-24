@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta chatset="utf-8"/>
+		<title>Admin documents</title>
+	</head>
+	<body>
+		<h1>Admin documents</h1>
+		<h2>Create document</h2>
+		<form method="post" action="[% uri_create | html %]">
+			<label>Document slug: <input name="slug"></label>
+			<input type="submit" value="Create">
+		</form>
+		<h2>Edit document</h2>
+		<p>…</p>
+	</body>
+</html>

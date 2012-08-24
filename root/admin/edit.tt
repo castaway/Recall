@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta chatset="utf-8"/>
+		<title>Edit document</title>
+	</head>
+	<body>
+		<h1>Edit document</h1>
+		<form method="post">
+			<div>
+				<label>Title
+					<input name="title" value="[% title | html %]">
+				</label>
+			</div>
+			<div>
+				<label>Document
+					<textarea name="source">[% source | html %]</textarea>
+				</label>
+			</div>
+			<input type="submit" value="Save">
+			<input type="submit" name="publish" value="Save and Publish">
+			<input type="submit" name="preview" value="Preview">
+		</form>
+	</body>
+</html>
