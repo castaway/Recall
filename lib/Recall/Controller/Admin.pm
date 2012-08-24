@@ -48,7 +48,8 @@ sub documents :Path('document') :Args(0) {
 		} map {
 			{ 
 				slug => $_->slug,
-				edit_uri => $c->uri_for($self->action_for('edit'), [ $_->slug ])
+				edit_uri => $c->uri_for($self->action_for('edit'), [ $_->slug ]),
+				published => !!$_->published
 			}
 		} $doc_table->all();
 

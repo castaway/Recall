@@ -12,10 +12,21 @@
 			<input type="submit" value="Create">
 		</form>
 		<h2>Edit document</h2>
-		<ul>
+		<table>
+			<thead>
+				<tr>
+					<th scope="col"><abbr title="Published">Pub</abbr></th>
+					<th scope="col">Slug</th>
+				</tr>
+			</thead>
+			<tbody>
 			[% FOREACH document IN documents %]
-				<li><a href="[% document.edit_uri | html %]">[% document.slug | html %]</a></li>
+				<tr>
+					<td>[% IF document.published %]✓[% END %]</td>
+					<td><a href="[% document.edit_uri | html %]">[% document.slug | html %]</a></td>
+				</tr>
 			[% END %]
-		</ul>
+			</tbody>
+		</table>
 	</body>
 </html>
