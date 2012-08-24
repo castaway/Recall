@@ -12,6 +12,10 @@
 			<input type="submit" value="Create">
 		</form>
 		<h2>Edit document</h2>
-		<p>…</p>
+		<ul>
+			[% FOREACH document IN documents %]
+				<li><a href="[% document.edit_uri | html %]">[% document.slug | html %]</a></li>
+			[% END %]
+		</ul>
 	</body>
 </html>

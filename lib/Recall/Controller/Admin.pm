@@ -40,6 +40,19 @@ sub documents :Path('document') :Args(0) {
 	my ( $self, $c ) = @_;
 
 	$c->stash->{uri_create} = $c->uri_for($self->action_for('create'));
+
+	# Get list of available documents
+	my $doc_table = $c->model("DB::Document");
+	my @documents = sort { 
+			$a->{slug} cmp $b->{slug};
+		} map {
+			{ 
+				slug => $_->slug,
+				edit_uri => $c->uri_for($self->action_for('edit'), [ $_->slug ])
+			}
+		} $doc_table->all();
+
+	$c->stash->{documents} = [ @documents ];
 }
 
 =head2 documents/create
@@ -102,7 +115,7 @@ sub edit :Path('document/edit') :Args(1) {
 
 		my $version = $document->create_related('versions', { slug => $slug, edited => DateTime->now, title => $post{title}, source => $post{source} });
 		if ($post{publish}) {
-			$document->published_versions($version->edited);
+			$document->published($version->edited);
 			$document->update;
 		}
 	}
@@ -120,14 +133,14 @@ sub edit :Path('document/edit') :Args(1) {
 		}
 	}
 
-	# Things to add laster
+	# Things to add later
 		# tags
 		# revert to old versions
 }
 
 sub edit_nothing :Path('document/edit') :Args(0) {
 	my ( $self, $c ) = @_;
-	return $c->redirect($c->uri_for(
+	return $c->response->redirect($c->uri_for(
 					$c->controller('Admin')->action_for('documents')
 				), 301);
 }
