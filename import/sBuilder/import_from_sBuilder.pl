@@ -58,7 +58,7 @@ foreach my $entry (@blog_entries) {
 
     say "$id - $slug - $path - $datetime";
 
-    my $doc = $documents->create({});
+    my $doc = $documents->create({ slug => $slug});
     my $ver = $doc->create_related('versions', { 
 			edited => $datetime, 
 			title => $title, 
