@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta chatset="utf-8"/>
+		<title>[% title | html %]</title>
+	</head>
+	<body>
+		<h1>[% title | html %]</h1>
+		
+		<div>
+			[% IF nearby.previous || nearby.next %]
+				<ul>
+					[% IF nearby.previous %]<li>[% nearby.previous.live.title | html %]</li>[% END %]
+					[% IF nearby.next %]<li>[% nearby.next.live.title | html %]</li>[% END %]
+				</ul>
+			[% ELSE %]
+				<p>No next or previous content</p>
+			[% END %]
+		</div>
+
+		<div>
+			<ul>
+			[% FOREACH document IN documents %]
+				<li>[% document.live.title | html %]</li>
+			[% END %]
+			</ul>
+		</div>
+
+	</body>
+</html>

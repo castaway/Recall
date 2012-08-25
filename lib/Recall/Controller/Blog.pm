@@ -32,6 +32,22 @@ sub index :Path :Args(0) {
 
 }
 
+=head2 period
+
+Show blog enteries for a given period
+
+=cut
+
+sub period :Private {
+  my ( $self, $c) = @_;
+  my $dt_start = $c->stash->{range}{start};
+  my $dt_end = $c->stash->{range}{end};
+  my @documents = $c->model("DB::Document")->get_first_published_between($dt_start, $dt_end);
+  my %nearby = $c->model("DB::Document")->get_next_and_previous($dt_start, $dt_end);
+  $c->stash->{documents} = \@documents;
+  $c->stash->{nearby} = \%nearby;
+}
+
 =head2 year
 
 Show blog entries for year
@@ -40,13 +56,11 @@ Show blog entries for year
 
 sub year :Path :Args(1) {
   my ( $self, $c, $year ) = @_;
-
+  $c->stash->{title} = "Blog entries for " . $year;
   my $dt_start = DateTime->new(year => $year);
   my $dt_end = $dt_start->clone->add( years => 1, seconds => -1 );
-
-  my @documents = $c->model("DB::Document")->get_first_published_between($dt_start, $dt_end);
-
-  $c->response->body( (scalar @documents) . " documents published in $year");
+  $c->stash->{range} = { start => $dt_start, end => $dt_end };
+  $c->forward('period');
 }
 
 =head2 month
@@ -57,13 +71,11 @@ Show blog entries for month
 
 sub month :Path :Args(2) {
   my ( $self, $c, $year, $month ) = @_;
-
+  $c->stash->{title} = "Blog entries for $month, $year";
   my $dt_start = DateTime->new(year => $year, month => $month );
   my $dt_end = $dt_start->clone->add( months => 1, seconds => -1 );
-
-  my @documents = $c->model("DB::Document")->get_first_published_between($dt_start, $dt_end);
-
-  $c->response->body( (scalar @documents) . " documents published in $month / $year");
+  $c->stash->{range} = { start => $dt_start, end => $dt_end };
+  $c->forward('period');
 }
 
 =head2 day
@@ -74,13 +86,11 @@ Show blog entries for day
 
 sub day :Path :Args(3) {
   my ( $self, $c, $year, $month, $day ) = @_;
-
+  $c->stash->{title} = "Blog entries for $day of $month, $year";
   my $dt_start = DateTime->new(year => $year, month => $month, day => $day );
   my $dt_end = $dt_start->clone->add( days => 1, seconds => -1 );
-
-  my @documents = $c->model("DB::Document")->get_first_published_between($dt_start, $dt_end);
-
-  $c->response->body( (scalar @documents) . " documents published on $day / $month / $year");
+  $c->stash->{range} = { start => $dt_start, end => $dt_end };
+  $c->forward('period');
 }
 
 
