@@ -23,34 +23,118 @@ __PACKAGE__->table("Documents");
 
 =head1 ACCESSORS
 
+=head2 document_id
+
+  data_type: 'integer'
+  extra: {unsigned => 1}
+  is_auto_increment: 1
+  is_nullable: 0
+
+=head2 first_published_id
+
+  data_type: 'integer'
+  extra: {unsigned => 1}
+  is_foreign_key: 1
+  is_nullable: 1
+
+=head2 live_id
+
+  data_type: 'integer'
+  extra: {unsigned => 1}
+  is_foreign_key: 1
+  is_nullable: 1
+
 =head2 slug
 
   data_type: 'varchar'
-  default_value: (empty string)
   is_nullable: 0
   size: 255
-
-=head2 published
-
-  data_type: 'datetime'
-  datetime_undef_if_invalid: 1
-  is_nullable: 1
 
 =cut
 
 __PACKAGE__->add_columns(
-  "slug",
-  { data_type => "varchar", default_value => "", is_nullable => 0, size => 255 },
-  "published",
+  "document_id",
   {
-    data_type => "datetime",
-    datetime_undef_if_invalid => 1,
+    data_type => "integer",
+    extra => { unsigned => 1 },
+    is_auto_increment => 1,
+    is_nullable => 0,
+  },
+  "first_published_id",
+  {
+    data_type => "integer",
+    extra => { unsigned => 1 },
+    is_foreign_key => 1,
     is_nullable => 1,
   },
+  "live_id",
+  {
+    data_type => "integer",
+    extra => { unsigned => 1 },
+    is_foreign_key => 1,
+    is_nullable => 1,
+  },
+  "slug",
+  { data_type => "varchar", is_nullable => 0, size => 255 },
 );
-__PACKAGE__->set_primary_key("slug");
+__PACKAGE__->set_primary_key("document_id");
 
 =head1 RELATIONS
+
+=head2 live
+
+Type: belongs_to
+
+Related object: L<Recall::Schema::DB::Result::Version>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "live",
+  "Recall::Schema::DB::Result::Version",
+  { version_id => "live_id" },
+  {
+    is_deferrable => 1,
+    join_type     => "LEFT",
+    on_delete     => "CASCADE",
+    on_update     => "CASCADE",
+  },
+);
+
+=head2 first_published
+
+Type: belongs_to
+
+Related object: L<Recall::Schema::DB::Result::Version>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "first_published",
+  "Recall::Schema::DB::Result::Version",
+  { version_id => "first_published_id" },
+  {
+    is_deferrable => 1,
+    join_type     => "LEFT",
+    on_delete     => "CASCADE",
+    on_update     => "CASCADE",
+  },
+);
+
+=head2 permanent
+
+Type: might_have
+
+Related object: L<Recall::Schema::DB::Result::Permanent>
+
+=cut
+
+__PACKAGE__->might_have(
+  "permanent",
+  "Recall::Schema::DB::Result::Permanent",
+  { "foreign.document_id" => "self.document_id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
 
 =head2 versions
 
@@ -63,23 +147,14 @@ Related object: L<Recall::Schema::DB::Result::Version>
 __PACKAGE__->has_many(
   "versions",
   "Recall::Schema::DB::Result::Version",
-  { "foreign.slug" => "self.slug" },
+  { "foreign.document_id" => "self.document_id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-24 10:57:03
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:1LiI1+1JE0ux9Ya7DQpaXQ
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-25 09:22:12
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:HUMrjJEWFvW3xa0CqJ7E4A
 
-__PACKAGE__->belongs_to(
-  "published_version",
-  "Recall::Schema::DB::Result::Version",
-  { 
-      "foreign.slug" => "self.slug",
-      "foreign.edited" => "self.published",
-   },
-  { cascade_copy => 0, cascade_delete => 0 }
-  );
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;

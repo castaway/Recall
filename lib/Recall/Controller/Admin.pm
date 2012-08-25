@@ -74,7 +74,7 @@ sub create :Path('document/create') :Args(0) {
 		unless ($d) {
 			my $result = $doc_table->create({slug => $slug});
 			# Redirect to the edit page
-			return $c->response->redirect($c->uri_for($self->action_for('edit'), [$slug]));
+			return $c->response->redirect($c->uri_for($self->action_for('edit'), [$result->id]));
 		}
 		# Else:
 			# Render form and offer to edit
@@ -92,11 +92,10 @@ Presents an editing form for a document and allows it to be saved
 =cut
 
 sub edit :Path('document/edit') :Args(1) {
-	my ( $self, $c, $slug ) = @_;
+	my ( $self, $c, $document_id ) = @_;
 
-	$slug = Recall::Slug->new(name => $slug)->slug;
 	my $doc_table = $c->model("DB::Document");
-	my $document = $doc_table->find($slug);
+	my $document = $doc_table->find($document_id);
 
 	unless ($document) {
 		# TODO make sure this comparison works
@@ -107,21 +106,22 @@ sub edit :Path('document/edit') :Args(1) {
 	my %post = %{$c->request->body_parameters};
 
 	if (%post) {
-		# TODO: CSRF protection
-	
-		if ($post{preview}) {
-			say STDERR "Going into preview mode";
-			$c->detach('preview');
-		}
-
-		my $version = $document->create_related('versions', { slug => $slug, edited => DateTime->now, title => $post{title}, source => $post{source} });
+		# TODO: CSRF protection	
+		$c->detach('preview') if ($post{preview});
+		my $version = $document->create_related('versions', { 
+			edited => DateTime->now, 
+			title => $post{title}, 
+			source => $post{source} 
+		});
 		if ($post{publish}) {
-			$document->published($version->edited);
+			$document->first_published($version) unless ($document->first_published);
+			$document->live($version);
 			$document->update;
 		}
 	}
 
-	$c->stash->{slug} = $slug;
+	$c->stash->{id} = $document_id;
+	$c->stash->{slug} = $document->slug;
 
 	if ($post{preview}) {
 		$c->stash->{title} = $post{title};
@@ -156,7 +156,6 @@ sub preview :Private {
 	$c->stash->{title} = $post{title};
 	$c->stash->{body} = $c->markdown->markdown($post{source});
 	$c->stash->{template} = 'admin/preview.tt';
-	say STDERR "Inside the preview method";
 }
 
 =head1 AUTHOR

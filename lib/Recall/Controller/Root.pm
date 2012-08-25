@@ -49,7 +49,7 @@ sub default :Path {
 
     # Find an associated document
     my $doc_table = $c->model("DB::Document");
-    my $document = $doc_table->find($slug);
+    my $document = $doc_table->find({ slug => $slug });
 
     # 404 if there is no associated document
     unless ($document) {
@@ -57,18 +57,18 @@ sub default :Path {
     }
 
     # Get the latest published version of the document
-    my $published = $document->published_version;
+    my $live = $document->live;
 
     # 404 if the document exists only in draft form
-    unless ($published) {
+    unless ($live) {
     	$c->detach('not_found');
     }
 
     # TODO - figure out cannonical URI for page and redirect to it if we aren't on it already
 
     # Populate the template
-    $c->stash->{title} = $published->title;
-	$c->stash->{body} = $c->markdown->markdown($published->source);
+    $c->stash->{title} = $live->title;
+	$c->stash->{body} = $c->markdown->markdown($live->source);
 	$c->stash->{template} = 'page.tt';
 }
 

@@ -23,12 +23,19 @@ __PACKAGE__->table("Versions");
 
 =head1 ACCESSORS
 
-=head2 slug
+=head2 version_id
 
-  data_type: 'varchar'
+  data_type: 'integer'
+  extra: {unsigned => 1}
+  is_auto_increment: 1
+  is_nullable: 0
+
+=head2 document_id
+
+  data_type: 'integer'
+  extra: {unsigned => 1}
   is_foreign_key: 1
   is_nullable: 0
-  size: 255
 
 =head2 edited
 
@@ -50,8 +57,20 @@ __PACKAGE__->table("Versions");
 =cut
 
 __PACKAGE__->add_columns(
-  "slug",
-  { data_type => "varchar", is_foreign_key => 1, is_nullable => 0, size => 255 },
+  "version_id",
+  {
+    data_type => "integer",
+    extra => { unsigned => 1 },
+    is_auto_increment => 1,
+    is_nullable => 0,
+  },
+  "document_id",
+  {
+    data_type => "integer",
+    extra => { unsigned => 1 },
+    is_foreign_key => 1,
+    is_nullable => 0,
+  },
   "edited",
   {
     data_type => "datetime",
@@ -63,11 +82,41 @@ __PACKAGE__->add_columns(
   "source",
   { data_type => "text", is_nullable => 1 },
 );
-__PACKAGE__->set_primary_key("slug", "edited");
+__PACKAGE__->set_primary_key("version_id");
 
 =head1 RELATIONS
 
-=head2 slug
+=head2 documents_live
+
+Type: has_many
+
+Related object: L<Recall::Schema::DB::Result::Document>
+
+=cut
+
+__PACKAGE__->has_many(
+  "documents_live",
+  "Recall::Schema::DB::Result::Document",
+  { "foreign.live_id" => "self.version_id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 documents_first_publisheds
+
+Type: has_many
+
+Related object: L<Recall::Schema::DB::Result::Document>
+
+=cut
+
+__PACKAGE__->has_many(
+  "documents_first_publisheds",
+  "Recall::Schema::DB::Result::Document",
+  { "foreign.first_published_id" => "self.version_id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 document
 
 Type: belongs_to
 
@@ -76,15 +125,15 @@ Related object: L<Recall::Schema::DB::Result::Document>
 =cut
 
 __PACKAGE__->belongs_to(
-  "slug",
+  "document",
   "Recall::Schema::DB::Result::Document",
-  { slug => "slug" },
+  { document_id => "document_id" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-24 10:55:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:knoY17YGWHDKzE41pEfTqw
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-25 09:17:49
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:faudqZy9Yl0kc0xr6re+Ag
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
