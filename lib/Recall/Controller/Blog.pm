@@ -39,14 +39,48 @@ Show blog entries for year
 =cut
 
 sub year :Path :Args(1) {
-	my ( $self, $c, $year ) = @_;
+  my ( $self, $c, $year ) = @_;
 
   my $dt_start = DateTime->new(year => $year);
   my $dt_end = $dt_start->clone->add( years => 1, seconds => -1 );
 
   my @documents = $c->model("DB::Document")->get_first_published_between($dt_start, $dt_end);
 
-	$c->response->body( (scalar @documents) . " documents published in $year");
+  $c->response->body( (scalar @documents) . " documents published in $year");
+}
+
+=head2 month
+
+Show blog entries for month
+
+=cut
+
+sub month :Path :Args(2) {
+  my ( $self, $c, $year, $month ) = @_;
+
+  my $dt_start = DateTime->new(year => $year, month => $month );
+  my $dt_end = $dt_start->clone->add( months => 1, seconds => -1 );
+
+  my @documents = $c->model("DB::Document")->get_first_published_between($dt_start, $dt_end);
+
+  $c->response->body( (scalar @documents) . " documents published in $month / $year");
+}
+
+=head2 day
+
+Show blog entries for day
+
+=cut
+
+sub day :Path :Args(3) {
+  my ( $self, $c, $year, $month, $day ) = @_;
+
+  my $dt_start = DateTime->new(year => $year, month => $month, day => $day );
+  my $dt_end = $dt_start->clone->add( days => 1, seconds => -1 );
+
+  my @documents = $c->model("DB::Document")->get_first_published_between($dt_start, $dt_end);
+
+  $c->response->body( (scalar @documents) . " documents published on $day / $month / $year");
 }
 
 
