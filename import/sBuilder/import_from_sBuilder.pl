@@ -4,7 +4,7 @@ use v5.10;
 use strict;
 use warnings;
 
-use List::Uniq;
+use DateTime;
 
 use lib qw[ 
 	../../lib/ 
@@ -22,14 +22,22 @@ foreach my $entry (@blog_entries) {
 	
 	my $id = $entry->id;
     my $path = $entry->path;
-    my ($slug) = ($path =~ m!/([^/]*)\.html!);
-    $slug = Recall::Slug->new( name => $slug )->slug;
 
-    push @uniqueness, $slug;
+    # Special cases for broken data. TODO: Make sure the redirects are implemented to support this!
+    if ($path eq '/2006/12/xml-rai.html') {
+    	$path = "/2006/12/18/xml-rai.html";
+    }
+	if ($path eq '/2006/12/css-validator.html') {
+    	$path = "/2006/12/18/css-validator.html";
+    }    
+
+    my ($year, $month, $day, $slug) = ($path =~ m!/(\d+)/(\d+)/(\d+)/(.+)!);
+    
+    # No constraints on what a slug can be for legacy content
+    # $slug = Recall::Slug->new( name => $slug )->slug;
+
+	my $datetime = DateTime->new(year => $year, month => $month, day => $day);    
+
+    say "$id - $slug - $path - $datetime";
 
 }
-
-my @really_unique = List::Uniq::uniq(@uniqueness);
-
-say scalar @really_unique;
-say scalar @uniqueness;
