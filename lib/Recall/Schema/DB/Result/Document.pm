@@ -162,14 +162,27 @@ Gets the title of the current live version
 =cut
 
 sub title {
-  warn "Getting title";
   my $self = shift;
   my $live = $self->live;
   unless ($live) {
-    warn "No live version found!";
     return undef;
   }
   return $live->title;
+}
+
+=head2 html
+
+Gets an HTML version of the source of the current live version of the document
+
+=cut
+
+sub html {
+  my $self = shift;
+  my $live = $self->live;
+  unless ($live) {
+    return undef;
+  }
+  return $live->html;
 }
 
 
