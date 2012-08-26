@@ -127,14 +127,11 @@ sub entry :Path :Args(4) {
   # 404 if there is no associated document
   $c->detach(qw/Root not_found/) unless ($document);
 
-  # Get the latest published version of the document
-  my $live = $document->live;
-
   # TODO - figure out cannonical URI for page and redirect to it if we aren't on it already
 
   # Populate the template
-  $c->stash->{title} = $live->title;
-  $c->stash->{body} = $c->markdown->markdown($live->source);
+  $c->stash->{title} = $document->title;
+  $c->stash->{body} = $document->html;
   $c->stash->{template} = 'page.tt';
 }
 
