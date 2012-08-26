@@ -43,19 +43,17 @@ Figure out if a page is being requested and dispatch
 sub default :Path {
     my ( $self, $c, @args ) = @_;
 
-    # The last argument must be the slug
-    my $slug = pop @args;
-    $slug = Recall::Slug->new( name => $slug )->slug;
-
     # Find an associated document
-    my $doc_table = $c->model("DB::Document");
-    my $document = $doc_table->find({ slug => $slug });
-
+    my $per_table = $c->model("DB::Permanent");
+    my ($version) = $per_table->find({ url => '/' . $c->request->path });
+    
     # 404 if there is no associated document
-    unless ($document) {
-		$c->detach('not_found');
+    unless ($version) {
+        $c->detach('not_found');
     }
 
+    my $document = $version->document;
+    
     # Get the latest published version of the document
     my $live = $document->live;
 

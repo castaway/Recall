@@ -67,5 +67,5 @@ foreach my $entry (@blog_entries) {
     $doc->first_published($ver);
     $doc->live($ver);
     $doc->update;
-
 }
+
