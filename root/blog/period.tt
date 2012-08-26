@@ -1,0 +1,32 @@
+[% BLOCK nearby_item -%]
+[% IF item -%]
+	<li><a href="[% item.uri | html %]">
+		[% item.text | html -%]
+	</a></li>
+[% END -%]
+[% END -%]<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta chatset="utf-8"/>
+		<title>[% title | html %]</title>
+	</head>
+	<body>
+		<h1>[% title | html %]</h1>
+		
+		<div>
+			<ul>
+				[% PROCESS nearby_item item=nearby.previous %]
+				[% PROCESS nearby_item item=nearby.next %]
+			</ul>
+		</div>
+
+		<div>
+			<ul>
+			[% FOREACH document IN documents %]
+				<li>[% document.title | html %]</li>
+			[% END %]
+			</ul>
+		</div>
+
+	</body>
+</html>

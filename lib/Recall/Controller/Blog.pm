@@ -61,6 +61,11 @@ sub year :Path :Args(1) {
   my $dt_end = $dt_start->clone->add( years => 1, seconds => -1 );
   $c->stash->{range} = { start => $dt_start, end => $dt_end };
   $c->forward('period');
+  foreach my $key (keys %{$c->stash->{nearby}}) {
+    my $date = $c->stash->{nearby}{$key}->first_published->edited;
+    my $value = { text => $date->year, uri => $c->uri_for($self->action_for('year'), [ $date->year ]) };
+    $c->stash->{nearby}{$key} = $value;
+  }
 }
 
 =head2 month
@@ -76,6 +81,11 @@ sub month :Path :Args(2) {
   my $dt_end = $dt_start->clone->add( months => 1, seconds => -1 );
   $c->stash->{range} = { start => $dt_start, end => $dt_end };
   $c->forward('period');
+  foreach my $key (keys %{$c->stash->{nearby}}) {
+    my $date = $c->stash->{nearby}{$key}->first_published->edited;
+    my $value = { text => $date->strftime("%B %Y"), uri => $c->uri_for($self->action_for('month'), [ $date->year, $date->month ]) };
+    $c->stash->{nearby}{$key} = $value;
+  }
 }
 
 =head2 day
@@ -91,6 +101,11 @@ sub day :Path :Args(3) {
   my $dt_end = $dt_start->clone->add( days => 1, seconds => -1 );
   $c->stash->{range} = { start => $dt_start, end => $dt_end };
   $c->forward('period');
+  foreach my $key (keys %{$c->stash->{nearby}}) {
+    my $date = $c->stash->{nearby}{$key}->first_published->edited;
+    my $value = { text => $date->strftime("%A, %d of %B %Y"), uri => $c->uri_for($self->action_for('year'), [ $date->year, $date->month, $date->day ]) };
+    $c->stash->{nearby}{$key} = $value;
+  }
 }
 
 

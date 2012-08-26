@@ -63,9 +63,12 @@ sub get_next_and_previous {
       order_by => { -desc => 'first_published.edited' }
     })->next;
 
-    return (previous => $previous, next => $next);
-}
+    my %result;
+    $result{previous} = $previous if $previous;
+    $result{next} = $next if $next;
 
+    return %result;
+}
 
 __PACKAGE__->meta->make_immutable;
 
