@@ -15,11 +15,13 @@ use Recall::Schema::DB;
 use Recall::Slug;
 use SBuilder::DataSource::Resources;
 use SBuilder::DataSource::MetaData;
+  use List::Uniq ':all';
+
 
 # Great password, eh? Good luck connecting to the server running this and not containing any data I care about...
 my $recall = Recall::Schema::DB->connect('dbi:mysql:recall', 'recall', 'recall'); 
 my $documents = $recall->resultset('Document');
-
+my $tag_tab = $recall->resultset('Tag');
 my @blog_entries  = SBuilder::DataSource::Resources->search({ action => 'Blog' });
 
 foreach my $entry (@blog_entries) {
@@ -56,6 +58,7 @@ foreach my $entry (@blog_entries) {
 
     # TODO : Parse out the image URIs, fetch the images, upload them a service, then update the content
 
+    my @tags = uniq( map { $_ = lc $_; s/\s*$//g; s/^\s*//g; $_ } split ',', $meta->keywords );
     say "$id - $slug - $path - $datetime";
 
     my $doc = $documents->create({ slug => $slug});
@@ -66,6 +69,13 @@ foreach my $entry (@blog_entries) {
 		});
     $doc->first_published($ver);
     $doc->live($ver);
+
+    foreach my $tag_name (@tags) {
+        next unless $tag_name;
+        say ' * ' . $tag_name;
+        my $tag = $tag_tab->find_or_create({name => $tag_name});
+        $doc->add_to_tags($tag);
+    }
     $doc->update;
 }
 
