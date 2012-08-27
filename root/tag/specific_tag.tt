@@ -1,0 +1,14 @@
+[% WRAPPER 'include/page.tt' 
+	title=title %]
+
+<ul>
+[% FOREACH document IN documents %]
+	<li>
+		<a href="[% document.url | html %]">
+			[% document.title | html %]
+		</a>
+	</li>
+[% END %]
+</ul>
+
+[% END %]

@@ -55,6 +55,30 @@ Shows a list of documents for a given tag
 sub specific_tag :Path :Args(1) {
     my ( $self, $c, $tag ) = @_;
 
+    my ($tag_result) = $c->model("DB::Tag")->search(
+    	{ 'name' => $tag },
+    	{ 
+    		prefetch => { documents_to_tags => 'document' } 
+    	}
+    );
+    
+    my @documents = map { 
+    		{ 
+    			title => $_->title,
+    			url => $c->uri_for($c->controller("Blog")->action_for('entry'), [ 
+    				$_->first_published->edited->year,
+    				$_->first_published->edited->month,
+    				$_->first_published->edited->day,
+    				$_->slug
+    				])
+    		}
+    	} $tag_result->documents;
+
+
+
+	$c->stash->{title} = $tag;
+    $c->stash->{documents} = \@documents;
+
 }
 
 
