@@ -70,6 +70,19 @@ sub get_next_and_previous {
     return %result;
 }
 
+=head2 is_published
+
+Filters out results that are not yet published
+
+=cut
+
+sub is_published {
+  my $self = shift;
+  return $self->search({ "document.first_published_id" => { '!=' => undef } });
+}
+ 
+
+
 __PACKAGE__->meta->make_immutable;
 
 1;

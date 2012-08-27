@@ -15,7 +15,7 @@ sub with_document_count {
   $self->search({},
     {
       '+columns' => 
-        { document_count => $self->correlate('documents_to_tags')->related_resultset('document')->search({ "document.first_published_id" => { '!=' => undef } })->count_rs->as_query }
+        { document_count => $self->correlate('documents_to_tags')->related_resultset('document')->is_published->count_rs->as_query }
     }
   );
 }
