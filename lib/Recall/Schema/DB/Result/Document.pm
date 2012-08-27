@@ -121,6 +121,21 @@ __PACKAGE__->belongs_to(
   },
 );
 
+=head2 documents_to_tags
+
+Type: has_many
+
+Related object: L<Recall::Schema::DB::Result::DocumentsToTag>
+
+=cut
+
+__PACKAGE__->has_many(
+  "documents_to_tags",
+  "Recall::Schema::DB::Result::DocumentsToTag",
+  { "foreign.document_id" => "self.document_id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 permanent
 
 Type: might_have
@@ -133,6 +148,21 @@ __PACKAGE__->might_have(
   "permanent",
   "Recall::Schema::DB::Result::Permanent",
   { "foreign.document_id" => "self.document_id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 tag
+
+Type: might_have
+
+Related object: L<Recall::Schema::DB::Result::Tag>
+
+=cut
+
+__PACKAGE__->might_have(
+  "tag",
+  "Recall::Schema::DB::Result::Tag",
+  { "foreign.about_document_id" => "self.document_id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
@@ -152,8 +182,10 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-25 09:22:12
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:HUMrjJEWFvW3xa0CqJ7E4A
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-27 12:24:20
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:kIGW2KlwlEZHnNh7515Llw
+
+__PACKAGE__->many_to_many( tags => 'documents_to_tags', 'tag' );
 
 =head2 title
 
