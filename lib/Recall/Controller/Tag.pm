@@ -4,6 +4,7 @@ use namespace::autoclean;
 
 BEGIN {extends 'Catalyst::Controller'; }
 
+use Recall::URI;
 
 =head1 NAME
 
@@ -65,12 +66,7 @@ sub specific_tag :Path :Args(1) {
     my @documents = map { 
     		{ 
     			title => $_->title,
-    			url => $c->uri_for($c->controller("Blog")->action_for('entry'), [ 
-    				$_->first_published->edited->year,
-    				$_->first_published->edited->month,
-    				$_->first_published->edited->day,
-    				$_->slug
-    				])
+    			url => Recall::URI->new( catalyst => $c, document => $_ )->uri
     		}
     	} $tag_result->documents;
 
