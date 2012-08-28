@@ -68,7 +68,7 @@ sub specific_tag :Path :Args(1) {
     			title => $_->title,
     			url => Recall::URI->new( catalyst => $c, document => $_ )->uri
     		}
-    	} $tag_result->documents;
+    	} $tag_result->documents->newest_first;
 
 
 

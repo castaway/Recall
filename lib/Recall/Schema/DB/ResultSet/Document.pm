@@ -80,7 +80,23 @@ sub is_published {
   my $self = shift;
   return $self->search({ "document.first_published_id" => { '!=' => undef } });
 }
+
+=head2 newest_first
+
+Orders by publication date. Newest first
+
+=cut
  
+sub newest_first {
+  my $self = shift;
+  return $self->search({},{
+      join => 'first_published',
+      order_by => {
+        -desc => 'first_published.edited'
+      }
+    });
+}
+
 
 
 __PACKAGE__->meta->make_immutable;
