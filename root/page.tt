@@ -6,6 +6,6 @@
 	</head>
 	<body>
 		<h1>[% title | html %]</h1>
-		[% body %]
+		[% content %]
 	</body>
 </html>

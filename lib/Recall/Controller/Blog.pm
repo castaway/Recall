@@ -138,7 +138,7 @@ sub entry :Path :Args(4) {
   # Populate the template
   $c->stash->{title} = $document->title;
   $c->stash->{body} = $document->html;
-  $c->stash->{template} = 'page.tt';
+  $c->stash->{template} = 'blog/entry.tt';
 }
 
 =head2 get_url_for_document
