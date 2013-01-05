@@ -44,7 +44,13 @@ sub period :Private {
   my $dt_end = $c->stash->{range}{end};
   my @documents = $c->model("DB::Document")->get_first_published_between($dt_start, $dt_end);
   my %nearby = $c->model("DB::Document")->get_next_and_previous($dt_start, $dt_end);
-  $c->stash->{documents} = \@documents;
+  my @documents_data = map {
+        {
+            title => $_->title,
+            uri => $self->get_url_for_document($c, $_)
+        };
+    } @documents;
+  $c->stash->{documents} = \@documents_data;
   $c->stash->{nearby} = \%nearby;
 }
 
@@ -133,6 +139,23 @@ sub entry :Path :Args(4) {
   $c->stash->{title} = $document->title;
   $c->stash->{body} = $document->html;
   $c->stash->{template} = 'page.tt';
+}
+
+=head2 get_url_for_document
+
+Given a document, generates a URL for it
+
+=cut
+
+sub get_url_for_document :Private {
+    my ($self, $c, $document) = @_;
+
+    my $date = $document->first_published->edited;
+
+    return $c->uri_for(
+        $self->action_for('entry'), 
+        [ $date->year, $date->month, $date->day, $document->slug ]
+    );
 }
 
 =head1 AUTHOR
