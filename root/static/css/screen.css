@@ -18,3 +18,15 @@
 footer h1 {
     font-size: 110%;
 }
+
+article header p {
+    font-size: 85%;
+}
+
+article header h1 {
+    margin-bottom: 0;
+}
+
+article header h1 + p {
+    margin-top: 0;
+}

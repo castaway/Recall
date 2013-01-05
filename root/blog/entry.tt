@@ -1,9 +1,18 @@
+[% BLOCK time_element %]
+<a href="[% dt.uri | html %]">
+    <time datetime="[% dt.iso | html %]">
+        [% dt.human | html %]
+    </time>
+</a>
+[% END %]
+
 [% WRAPPER 'index.tt'
     article_title = title
 %]
     <article>
         <header>
             <h1>[% title | html %]</h1>
+            <p>Published on [% PROCESS time_element dt=date.published %]</p>
             [%# TODO: Add a summary paragraph if one exists %]
         </header>
         [% body %]

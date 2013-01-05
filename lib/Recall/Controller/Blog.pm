@@ -62,16 +62,16 @@ Show blog entries for year
 
 sub year :Path :Args(1) {
   my ( $self, $c, $year ) = @_;
-  $c->stash->{title} = "Blog entries for " . $year;
   my $dt_start = DateTime->new(year => $year);
   my $dt_end = $dt_start->clone->add( years => 1, seconds => -1 );
   $c->stash->{range} = { start => $dt_start, end => $dt_end };
   $c->forward('period');
   foreach my $key (keys %{$c->stash->{nearby}}) {
     my $date = $c->stash->{nearby}{$key}->first_published->edited;
-    my $value = { text => $date->year, uri => $c->uri_for($self->action_for('year'), [ $date->year ]) };
+    my $value = { text => $date->year, uri => $c->uri_for($self->action_for('year'), [ $date->strftime("%Y") ]) };
     $c->stash->{nearby}{$key} = $value;
   }
+  $c->stash->{title} = $dt_start->strftime("Entries for %Y");
 }
 
 =head2 month
@@ -82,16 +82,22 @@ Show blog entries for month
 
 sub month :Path :Args(2) {
   my ( $self, $c, $year, $month ) = @_;
-  $c->stash->{title} = "Blog entries for $month, $year";
   my $dt_start = DateTime->new(year => $year, month => $month );
   my $dt_end = $dt_start->clone->add( months => 1, seconds => -1 );
   $c->stash->{range} = { start => $dt_start, end => $dt_end };
   $c->forward('period');
   foreach my $key (keys %{$c->stash->{nearby}}) {
     my $date = $c->stash->{nearby}{$key}->first_published->edited;
-    my $value = { text => $date->strftime("%B %Y"), uri => $c->uri_for($self->action_for('month'), [ $date->year, $date->month ]) };
+    my $value = {
+        text => $date->strftime("%B %Y"),
+        uri => $c->uri_for(
+            $self->action_for('month'),
+            [ split '-', $date->strftime("%Y-%m") ]
+        )
+    };
     $c->stash->{nearby}{$key} = $value;
   }
+  $c->stash->{title} = $dt_start->strftime("Entries for %B %Y");
 }
 
 =head2 day
@@ -102,16 +108,22 @@ Show blog entries for day
 
 sub day :Path :Args(3) {
   my ( $self, $c, $year, $month, $day ) = @_;
-  $c->stash->{title} = "Blog entries for $day of $month, $year";
   my $dt_start = DateTime->new(year => $year, month => $month, day => $day );
   my $dt_end = $dt_start->clone->add( days => 1, seconds => -1 );
   $c->stash->{range} = { start => $dt_start, end => $dt_end };
   $c->forward('period');
   foreach my $key (keys %{$c->stash->{nearby}}) {
     my $date = $c->stash->{nearby}{$key}->first_published->edited;
-    my $value = { text => $date->strftime("%A, %d of %B %Y"), uri => $c->uri_for($self->action_for('year'), [ $date->year, $date->month, $date->day ]) };
+    my $value = { 
+        text => $date->strftime("%a. %d %B %Y"), 
+        uri => $c->uri_for(
+            $self->action_for('year'),
+            [ split '-', $date->strftime("%Y-%m-%d") ]
+        )
+    };
     $c->stash->{nearby}{$key} = $value;
   }
+  $c->stash->{title} = $dt_start->strftime("Entries for %a. %d %B %Y");
 }
 
 
@@ -135,8 +147,21 @@ sub entry :Path :Args(4) {
 
   # TODO - figure out cannonical URI for page and redirect to it if we aren't on it already
 
+  my $published = $document->first_published;
+  # my $edited = $document->last_edited;
+
   # Populate the template
   $c->stash->{title} = $document->title;
+  $c->stash->{date} = {
+    published => $self->template_ready_date($c, $published->edited)
+  };
+  # my $edited_time = $edited->edited->strftime("%a. %d %B %Y");
+  # if ($edited_time ne $c->stash->{date}{published}{human}) {
+  #   $c->stash->{date}{edited} = {
+  #       human => $edited_time,
+  #       iso => $edited->edited->strftime("%Y-%m-%d"),
+  #   };
+  # }
   $c->stash->{body} = $document->html;
   $c->stash->{template} = 'blog/entry.tt';
 }
@@ -148,14 +173,35 @@ Given a document, generates a URL for it
 =cut
 
 sub get_url_for_document :Private {
+    # TODO: Get this to format the numbers correctly. 
+    # TODO: Get entry() to run content through this to check if the URI is canonical or not
     my ($self, $c, $document) = @_;
 
     my $date = $document->first_published->edited;
-
     return $c->uri_for(
         $self->action_for('entry'), 
-        [ $date->year, $date->month, $date->day, $document->slug ]
+        [ (split '-', $date->strftime("%Y-%m-%d")), $document->slug ]
     );
+}
+
+=head2 template_ready_date
+
+Given a datetime object, returns a hash containing a human readable date, and
+iso date (for HTML 5's datetime attribute) and a URI to link to the page for
+entries written on that date.
+
+=cut
+
+sub template_ready_date :Private {
+    my ($self, $c, $datetime) = @_;    
+    return {
+        human => $datetime->strftime("%a. %d %B %Y"),
+        iso => $datetime->strftime("%Y-%m-%d"),
+        uri => $c->uri_for(
+            $self->action_for('day'),
+            [ (split '-', $datetime->strftime("%Y-%m-%d")) ]
+        )
+    }
 }
 
 =head1 AUTHOR
