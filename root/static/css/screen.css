@@ -3,3 +3,18 @@
     margin-right: auto;
     text-align: center;
 }
+
+.content > header,
+.content > article,
+.content > footer {
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.content footer {
+    border: solid #f16529 2px;
+}
+
+footer h1 {
+    font-size: 110%;
+}
