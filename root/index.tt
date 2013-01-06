@@ -45,14 +45,15 @@
         </div> <!-- #main-container -->
 
         <div class="footer-container">
-            <footer class="wrapper">
+            <footer class="wrapper clearfix">
                 <div id="elsewhere">
                     <ul>
-                        <li><a href="http://dorward.co.uk/">Business Card</a></li>
+                        <li><a href="http://dorward.co.uk/">Professional Profile</a></li>
                         <li><a href="http://flickr.com/photos/dorward/">Photos</a></li>
                         <li><a href="http://thecoreworlds.net/blog/">SF / Fantasy Ramblings</a></li>
                         <li><a href="http://twitter.com/dorward">Twitter</a></li>
                         <li><a href="https://plus.google.com/107811826793736287613/posts">Google+</a></li>
+                        <li><a href="http://github.com/dorward">Github</a></li>
                     </ul>
                 </div>
             </footer>

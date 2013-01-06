@@ -40,3 +40,44 @@ footer.wrapper :target {
     outline: dotted 1px blue;
 }
 
+footer.wrapper {
+    font-size: 85%;
+    color: white;
+    padding-top: 0;
+}
+
+footer.wrapper ul,
+footer.wrapper li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    line-height: 1.2;
+    background: #e44d26;
+}
+
+footer.wrapper ul {
+    display: inline-block;
+    padding: 16px 6px 6px 6px;
+}
+
+footer.wrapper a {
+    color: white;
+    font-weight: normal;
+}
+
+footer.wrapper a:visited {
+    color: #ccc;
+}
+
+footer.wrapper a:hover,
+footer.wrapper a:focus {
+    color: #ccf;
+}
+
+footer.wrapper a:active {
+    color: #aff;
+}
+
+#elsewhere {
+    float: right;
+}
