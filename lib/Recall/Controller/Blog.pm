@@ -63,16 +63,16 @@ Show blog entries for year
 sub year :Path :Args(1) {
   my ( $self, $c, $year ) = @_;
   my $dt_start = DateTime->new(year => $year);
-  # Redirect to cannonical URI
-  my $cannonical = $c->uri_for(
+  # Redirect to canonical URI
+  my $canonical = $c->uri_for(
             $self->action_for('year'),
             [ split '-', $dt_start->strftime("%Y") ]
         );
-  if ($c->request->uri ne $cannonical) {
-    $c->response->redirect($cannonical, 301);
+  if ($c->request->uri ne $canonical) {
+    $c->response->redirect($canonical, 301);
     return;
   }
-  $c->stash->{cannonical} = $cannonical;
+  $c->stash->{canonical} = $canonical;
 
   # Get data
   my $dt_end = $dt_start->clone->add( years => 1, seconds => -1 );
@@ -107,16 +107,16 @@ sub month :Path :Args(2) {
   my ( $self, $c, $year, $month ) = @_;
   my $dt_start = DateTime->new(year => $year, month => $month );
 
-  # Redirect to cannonical URI
-  my $cannonical = $c->uri_for(
+  # Redirect to canonical URI
+  my $canonical = $c->uri_for(
             $self->action_for('month'),
             [ split '-', $dt_start->strftime("%Y-%m") ]
         );
-  if ($c->request->uri ne $cannonical) {
-    $c->response->redirect($cannonical, 301);
+  if ($c->request->uri ne $canonical) {
+    $c->response->redirect($canonical, 301);
     return;
   }
-  $c->stash->{cannonical} = $cannonical;
+  $c->stash->{canonical} = $canonical;
 
   # Get data
   my $dt_end = $dt_start->clone->add( months => 1, seconds => -1 );
@@ -151,16 +151,16 @@ sub day :Path :Args(3) {
   my ( $self, $c, $year, $month, $day ) = @_;
   my $dt_start = DateTime->new(year => $year, month => $month, day => $day );
   
-  # Redirect to cannonical URI
-  my $cannonical = $c->uri_for(
+  # Redirect to canonical URI
+  my $canonical = $c->uri_for(
             $self->action_for('day'),
             [ split '-', $dt_start->strftime("%Y-%m-%d") ]
         );
-  if ($c->request->uri ne $cannonical) {
-    $c->response->redirect($cannonical, 301);
+  if ($c->request->uri ne $canonical) {
+    $c->response->redirect($canonical, 301);
     return;
   }
-  $c->stash->{cannonical} = $cannonical;
+  $c->stash->{canonical} = $canonical;
   
   # Get data
   my $dt_end = $dt_start->clone->add( days => 1, seconds => -1 );
@@ -204,13 +204,13 @@ sub entry :Path :Args(4) {
   # 404 if there is no associated document
   $c->detach(qw/Root not_found/) unless ($document);
 
-  # Redirect to cannonical URI
-  my $cannonical = $self->get_url_for_document($c, $document);
-  if ($c->request->uri ne $cannonical) {
-    $c->response->redirect($cannonical, 301);
+  # Redirect to canonical URI
+  my $canonical = $self->get_url_for_document($c, $document);
+  if ($c->request->uri ne $canonical) {
+    $c->response->redirect($canonical, 301);
     return;
   }
-  $c->stash->{cannonical} = $cannonical;
+  $c->stash->{canonical} = $canonical;
 
   my $published = $document->first_published;
   # my $edited = $document->last_edited;
