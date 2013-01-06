@@ -36,13 +36,72 @@ sub index :Path :Args(0) {
     }
     $c->stash->{canonical} = $canonical;
 
-    my @documents = $c->model("DB::Document")->get_most_recent_articles(10);
+    $c->forward('recent');
+}
+
+=head2 Blog homepage
+
+=cut
+
+sub feed :Path('feed') :Args(0) {
+    my ( $self, $c ) = @_;
+
+    # Redirect to canonical URI
+    my $canonical = $c->uri_for(
+            $self->action_for('feed')
+        );
+    if ($c->request->uri ne $canonical) {
+    $c->response->redirect($canonical, 301);
+    return;
+    }
+    $c->stash->{canonical} = $canonical;
+
+    $c->forward('recent');
+
+    # TODO: Use "Most recently edited time of most recently edited document" where apropriate
+
+    $c->stash->{feed} = {
+      format      => 'Atom',
+      id          => $c->req->base,
+      title       => "Dorward's Ramblings",
+      description => "David Dorward's Blog",
+      link        => $c->req->base,
+      modified    => $c->stash->{documents}[0]{raw}->first_published->edited,
+      entries => [
+        map {
+            {
+                id       => $_->{uri},
+                link     => $_->{uri},
+                title    => $_->{title},
+                modified => $_->{raw}->first_published->edited,
+                content  => $_->{content}
+            };
+        } @{$c->stash->{documents}}
+      ],
+    };
+  $c->forward('Recall::View::Feed');
+
+
+
+}
+
+=head2 recent
+
+Get most recent blog entries
+
+=cut
+
+sub recent :Private {
+  my ( $self, $c) = @_;
+  
+  my @documents = $c->model("DB::Document")->get_most_recent_articles(10);
     my @documents_data = map {
         {
             title => $_->title,
             uri => $self->get_url_for_document($c, $_),
             content => $_->html,
-            published => $self->template_ready_date($c, $_->first_published->edited)
+            published => $self->template_ready_date($c, $_->first_published->edited),
+            raw => $_
         };
     } @documents;
     $c->stash->{documents} = \@documents_data;
@@ -50,7 +109,7 @@ sub index :Path :Args(0) {
 
 =head2 period
 
-Show blog enteries for a given period
+Get blog enteries for a given period
 
 =cut
 
