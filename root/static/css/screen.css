@@ -30,3 +30,8 @@ article header h1 {
 article header h1 + p {
     margin-top: 0;
 }
+
+footer.wrapper :target {
+    background: white;
+    outline: dotted 1px blue;
+}
