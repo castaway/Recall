@@ -1,4 +1,5 @@
-[% WRAPPER 'index.tt'
+[% PROCESS 'common.tt';
+   WRAPPER 'index.tt'
     article_title = "Blog"
 %]
 
@@ -6,11 +7,13 @@
         <h1>[% title | html %]</h1>
     </header>
 
-    <article>
-        <ul>
-        [% FOREACH document IN documents %]
-            <li><a href="[% document.uri | html %]">[% document.title | html %]</a></li>
-        [% END %]
-        </ul>
-    </article>
+    [% FOREACH document IN documents %]
+        <article>
+            <header>
+                <h1><a href="[% document.uri | html %]">[% document.title | html %]</a></h1>
+                <p>Published on [% PROCESS time_element dt=document.published %]</p>
+            </header>
+            [% document.content %]
+        </article>
+    [% END %]
 [% END %]

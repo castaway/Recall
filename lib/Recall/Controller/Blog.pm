@@ -40,7 +40,9 @@ sub index :Path :Args(0) {
     my @documents_data = map {
         {
             title => $_->title,
-            uri => $self->get_url_for_document($c, $_)
+            uri => $self->get_url_for_document($c, $_),
+            content => $_->html,
+            published => $self->template_ready_date($c, $_->first_published->edited)
         };
     } @documents;
     $c->stash->{documents} = \@documents_data;

@@ -1,0 +1,14 @@
+[% BLOCK nearby_item -%]
+    [% IF item -%]
+        <li><a href="[% item.uri | html %]">
+            [% item.text | html -%]
+        </a></li>
+    [% END -%]
+[% END -%]
+[% BLOCK time_element -%]
+<a href="[% dt.uri | html %]">
+    <time datetime="[% dt.iso | html %]">
+        [% dt.human | html %]
+    </time>
+</a>
+[% END -%]

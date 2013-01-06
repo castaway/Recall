@@ -1,12 +1,5 @@
-[% BLOCK time_element %]
-<a href="[% dt.uri | html %]">
-    <time datetime="[% dt.iso | html %]">
-        [% dt.human | html %]
-    </time>
-</a>
-[% END %]
-
-[% WRAPPER 'index.tt'
+[% PROCESS 'common.tt';
+   WRAPPER 'index.tt'
     article_title = title
 %]
     <article>

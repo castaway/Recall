@@ -35,3 +35,7 @@ footer.wrapper :target {
     background: white;
     outline: dotted 1px blue;
 }
+
+article + article {
+    border-top: solid #f16529 2px;
+}
