@@ -145,7 +145,12 @@ sub entry :Path :Args(4) {
   # 404 if there is no associated document
   $c->detach(qw/Root not_found/) unless ($document);
 
-  # TODO - figure out cannonical URI for page and redirect to it if we aren't on it already
+  # Redirect to cannonical URI
+  my $cannonical = $self->get_url_for_document($c, $document);
+  if ($c->request->uri ne $cannonical) {
+    $c->response->redirect($cannonical, 301);
+    return;
+  }
 
   my $published = $document->first_published;
   # my $edited = $document->last_edited;
