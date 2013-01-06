@@ -98,6 +98,28 @@ sub newest_first {
 }
 
 
+=head2 get_most_recent_articles( $limit )
+
+Gets the most recent $limit articles that have been published
+
+=cut
+
+sub get_most_recent_articles {
+    my ($self, $limit ) = @_;
+    return $self->search(
+        {},
+        {
+            join => 'first_published',
+            order_by => {
+                -desc => 'first_published.edited'
+            },
+            rows => $limit
+        }
+    );
+}
+
+
+
 
 __PACKAGE__->meta->make_immutable;
 

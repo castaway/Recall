@@ -26,10 +26,24 @@ Catalyst Controller.
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
 
-    $c->response->body('Matched Recall::Controller::Blog in Blog.');
+    # Redirect to canonical URI
+    my $canonical = $c->uri_for(
+            $self->action_for('index')
+        );
+    if ($c->request->uri ne $canonical) {
+    $c->response->redirect($canonical, 301);
+    return;
+    }
+    $c->stash->{canonical} = $canonical;
 
-    # TODO: Render most recent blog entries
-
+    my @documents = $c->model("DB::Document")->get_most_recent_articles(10);
+    my @documents_data = map {
+        {
+            title => $_->title,
+            uri => $self->get_url_for_document($c, $_)
+        };
+    } @documents;
+    $c->stash->{documents} = \@documents_data;
 }
 
 =head2 period
@@ -63,6 +77,7 @@ Show blog entries for year
 sub year :Path :Args(1) {
   my ( $self, $c, $year ) = @_;
   my $dt_start = DateTime->new(year => $year);
+
   # Redirect to canonical URI
   my $canonical = $c->uri_for(
             $self->action_for('year'),

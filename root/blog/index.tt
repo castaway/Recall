@@ -1,0 +1,16 @@
+[% WRAPPER 'index.tt'
+    article_title = "Blog"
+%]
+
+    <header>
+        <h1>[% title | html %]</h1>
+    </header>
+
+    <article>
+        <ul>
+        [% FOREACH document IN documents %]
+            <li><a href="[% document.uri | html %]">[% document.title | html %]</a></li>
+        [% END %]
+        </ul>
+    </article>
+[% END %]
