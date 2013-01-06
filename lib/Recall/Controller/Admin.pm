@@ -43,15 +43,13 @@ sub documents :Path('document') :Args(0) {
 
 	# Get list of available documents
 	my $doc_table = $c->model("DB::Document");
-	my @documents = sort { 
-			$a->{slug} cmp $b->{slug};
-		} map {
+	my @documents = map {
 			{ 
 				slug => $_->slug,
-				edit_uri => $c->uri_for($self->action_for('edit'), [ $_->slug ]),
-				published => !!$_->published
+				edit_uri => $c->uri_for($self->action_for('edit'), [ $_->id ]),
+				published => !!$_->live
 			}
-		} $doc_table->all();
+		} $doc_table->newest_first->all();
 
 	$c->stash->{documents} = [ @documents ];
 }

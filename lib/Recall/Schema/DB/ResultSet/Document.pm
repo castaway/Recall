@@ -76,7 +76,7 @@ Filters out results that are not yet published
 
 =cut
 
-sub is_published {
+sub published {
   my $self = shift;
   return $self->search({ "document.first_published_id" => { '!=' => undef } });
 }
