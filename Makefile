@@ -16,16 +16,16 @@
 #     BUILD_REQUIRES => { Test::More=>q[0.88], ExtUtils::MakeMaker=>q[6.42] }
 #     CONFIGURE_REQUIRES => {  }
 #     DISTNAME => q[Recall]
-#     EXE_FILES => [q[script/recall_cgi.pl], q[script/recall_create.pl], q[script/recall_fastcgi.pl], q[script/recall_server.pl], q[script/recall_test.pl]]
+#     EXE_FILES => [q[script/recall_cgi.pl], q[script/recall_create.pl], q[script/recall_fastcgi.pl], q[script/recall_server.pl], q[script/recall_test.pl], q[script/show_relationships.pl]]
 #     LICENSE => q[perl]
 #     NAME => q[Recall]
 #     NO_META => q[1]
-#     PREREQ_PM => { namespace::autoclean=>q[0], Catalyst::Plugin::Static::Simple=>q[0], ExtUtils::MakeMaker=>q[6.42], Catalyst::Plugin::ConfigLoader=>q[0], Catalyst::Action::RenderView=>q[0], Test::More=>q[0.88], Config::General=>q[0], Catalyst::Runtime=>q[5.90016], Moose=>q[0] }
+#     PREREQ_PM => { namespace::autoclean=>q[0], Catalyst::Plugin::Static::Simple=>q[0], Catalyst::Plugin::Markdown=>q[0], ExtUtils::MakeMaker=>q[6.42], Catalyst::Plugin::ConfigLoader=>q[0], Catalyst::Action::RenderView=>q[0], Test::More=>q[0.88], Config::General=>q[0], Catalyst::Runtime=>q[5.90016], Text::Markdown=>q[0], Moose=>q[0] }
 #     VERSION => q[0.01]
 #     VERSION_FROM => q[lib/Recall.pm]
 #     dist => { PREOP=>q[$(PERL) -I. "-MModule::Install::Admin" -e "dist_preop(q($(DISTVNAME)))"] }
 #     realclean => { FILES=>q[MYMETA.yml] }
-#     test => { TESTS=>q[t/01app.t t/02pod.t t/03podcoverage.t] }
+#     test => { TESTS=>q[t/01app.t t/02pod.t t/03podcoverage.t t/controller__.t t/controller_Admin.t t/controller_Blog.t t/controller_Tag.t t/model_DB.t t/view_TT.t] }
 
 # --- MakeMaker post_initialize section:
 
@@ -45,11 +45,11 @@ FULL_AR = /usr/bin/ar
 LD = cc
 LDDLFLAGS = -shared -O2 -g -L/usr/local/lib -fstack-protector
 LDFLAGS =  -fstack-protector -L/usr/local/lib
-LIBC = /lib/libc-2.11.2.so
+LIBC = /lib/libc-2.11.3.so
 LIB_EXT = .a
 OBJ_EXT = .o
 OSNAME = linux
-OSVERS = 2.6.32-5-686
+OSVERS = 3.2.0-4-686-pae
 RANLIB = :
 SITELIBEXP = /usr/local/share/perl/5.10.1
 SITEARCHEXP = /usr/local/lib/perl/5.10.1
@@ -171,7 +171,18 @@ MAN1PODS = script/recall_cgi.pl \
 	script/recall_server.pl \
 	script/recall_test.pl
 MAN3PODS = lib/Recall.pm \
-	lib/Recall/Controller/Root.pm
+	lib/Recall/Controller/Admin.pm \
+	lib/Recall/Controller/Blog.pm \
+	lib/Recall/Controller/Root.pm \
+	lib/Recall/Controller/Tag.pm \
+	lib/Recall/Model/DB.pm \
+	lib/Recall/Schema/DB/Result/Document.pm \
+	lib/Recall/Schema/DB/Result/DocumentsToTag.pm \
+	lib/Recall/Schema/DB/Result/Permanent.pm \
+	lib/Recall/Schema/DB/Result/Tag.pm \
+	lib/Recall/Schema/DB/Result/Version.pm \
+	lib/Recall/Schema/DB/ResultSet/Document.pm \
+	lib/Recall/View/TT.pm
 
 # Where is the Config information that we are using/depend on
 CONFIGDEP = $(PERL_ARCHLIB)$(DFSEP)Config.pm $(PERL_INC)$(DFSEP)config.h
@@ -194,12 +205,60 @@ PERL_ARCHIVE_AFTER =
 
 
 TO_INST_PM = lib/Recall.pm \
-	lib/Recall/Controller/Root.pm
+	lib/Recall/Controller/Admin.pm \
+	lib/Recall/Controller/Blog.pm \
+	lib/Recall/Controller/Root.pm \
+	lib/Recall/Controller/Tag.pm \
+	lib/Recall/Model/DB.pm \
+	lib/Recall/Schema/DB.pm \
+	lib/Recall/Schema/DB/Result/Document.pm \
+	lib/Recall/Schema/DB/Result/DocumentsToTag.pm \
+	lib/Recall/Schema/DB/Result/Permanent.pm \
+	lib/Recall/Schema/DB/Result/Tag.pm \
+	lib/Recall/Schema/DB/Result/Version.pm \
+	lib/Recall/Schema/DB/ResultSet/Document.pm \
+	lib/Recall/Schema/DB/ResultSet/DocumentsToTag.pm \
+	lib/Recall/Schema/DB/ResultSet/Tag.pm \
+	lib/Recall/Slug.pm \
+	lib/Recall/URI.pm \
+	lib/Recall/View/TT.pm
 
-PM_TO_BLIB = lib/Recall/Controller/Root.pm \
+PM_TO_BLIB = lib/Recall/Controller/Admin.pm \
+	blib/lib/Recall/Controller/Admin.pm \
+	lib/Recall/Schema/DB/Result/Tag.pm \
+	blib/lib/Recall/Schema/DB/Result/Tag.pm \
+	lib/Recall/Schema/DB/ResultSet/DocumentsToTag.pm \
+	blib/lib/Recall/Schema/DB/ResultSet/DocumentsToTag.pm \
+	lib/Recall/Schema/DB/ResultSet/Document.pm \
+	blib/lib/Recall/Schema/DB/ResultSet/Document.pm \
+	lib/Recall/Controller/Root.pm \
 	blib/lib/Recall/Controller/Root.pm \
+	lib/Recall/Slug.pm \
+	blib/lib/Recall/Slug.pm \
+	lib/Recall/Controller/Blog.pm \
+	blib/lib/Recall/Controller/Blog.pm \
+	lib/Recall/Model/DB.pm \
+	blib/lib/Recall/Model/DB.pm \
+	lib/Recall/Controller/Tag.pm \
+	blib/lib/Recall/Controller/Tag.pm \
+	lib/Recall/Schema/DB/Result/Version.pm \
+	blib/lib/Recall/Schema/DB/Result/Version.pm \
+	lib/Recall/Schema/DB/Result/DocumentsToTag.pm \
+	blib/lib/Recall/Schema/DB/Result/DocumentsToTag.pm \
+	lib/Recall/View/TT.pm \
+	blib/lib/Recall/View/TT.pm \
+	lib/Recall/URI.pm \
+	blib/lib/Recall/URI.pm \
+	lib/Recall/Schema/DB.pm \
+	blib/lib/Recall/Schema/DB.pm \
+	lib/Recall/Schema/DB/Result/Document.pm \
+	blib/lib/Recall/Schema/DB/Result/Document.pm \
+	lib/Recall/Schema/DB/ResultSet/Tag.pm \
+	blib/lib/Recall/Schema/DB/ResultSet/Tag.pm \
 	lib/Recall.pm \
-	blib/lib/Recall.pm
+	blib/lib/Recall.pm \
+	lib/Recall/Schema/DB/Result/Permanent.pm \
+	blib/lib/Recall/Schema/DB/Result/Permanent.pm
 
 
 # --- MakeMaker platform_constants section:
@@ -427,8 +486,19 @@ manifypods : pure_all  \
 	script/recall_fastcgi.pl \
 	script/recall_test.pl \
 	script/recall_cgi.pl \
+	lib/Recall/Controller/Admin.pm \
+	lib/Recall/Schema/DB/Result/Version.pm \
+	lib/Recall/Schema/DB/Result/DocumentsToTag.pm \
+	lib/Recall/Schema/DB/Result/Tag.pm \
+	lib/Recall/View/TT.pm \
+	lib/Recall/Schema/DB/ResultSet/Document.pm \
+	lib/Recall/Schema/DB/Result/Document.pm \
 	lib/Recall/Controller/Root.pm \
-	lib/Recall.pm
+	lib/Recall/Model/DB.pm \
+	lib/Recall/Controller/Blog.pm \
+	lib/Recall.pm \
+	lib/Recall/Schema/DB/Result/Permanent.pm \
+	lib/Recall/Controller/Tag.pm
 	$(NOECHO) $(POD2MAN) --section=1 --perm_rw=$(PERM_RW) \
 	  script/recall_server.pl $(INST_MAN1DIR)/recall_server.pl.$(MAN1EXT) \
 	  script/recall_create.pl $(INST_MAN1DIR)/recall_create.pl.$(MAN1EXT) \
@@ -436,8 +506,19 @@ manifypods : pure_all  \
 	  script/recall_test.pl $(INST_MAN1DIR)/recall_test.pl.$(MAN1EXT) \
 	  script/recall_cgi.pl $(INST_MAN1DIR)/recall_cgi.pl.$(MAN1EXT) 
 	$(NOECHO) $(POD2MAN) --section=3 --perm_rw=$(PERM_RW) \
+	  lib/Recall/Controller/Admin.pm $(INST_MAN3DIR)/Recall::Controller::Admin.$(MAN3EXT) \
+	  lib/Recall/Schema/DB/Result/Version.pm $(INST_MAN3DIR)/Recall::Schema::DB::Result::Version.$(MAN3EXT) \
+	  lib/Recall/Schema/DB/Result/DocumentsToTag.pm $(INST_MAN3DIR)/Recall::Schema::DB::Result::DocumentsToTag.$(MAN3EXT) \
+	  lib/Recall/Schema/DB/Result/Tag.pm $(INST_MAN3DIR)/Recall::Schema::DB::Result::Tag.$(MAN3EXT) \
+	  lib/Recall/View/TT.pm $(INST_MAN3DIR)/Recall::View::TT.$(MAN3EXT) \
+	  lib/Recall/Schema/DB/ResultSet/Document.pm $(INST_MAN3DIR)/Recall::Schema::DB::ResultSet::Document.$(MAN3EXT) \
+	  lib/Recall/Schema/DB/Result/Document.pm $(INST_MAN3DIR)/Recall::Schema::DB::Result::Document.$(MAN3EXT) \
 	  lib/Recall/Controller/Root.pm $(INST_MAN3DIR)/Recall::Controller::Root.$(MAN3EXT) \
-	  lib/Recall.pm $(INST_MAN3DIR)/Recall.$(MAN3EXT) 
+	  lib/Recall/Model/DB.pm $(INST_MAN3DIR)/Recall::Model::DB.$(MAN3EXT) \
+	  lib/Recall/Controller/Blog.pm $(INST_MAN3DIR)/Recall::Controller::Blog.$(MAN3EXT) \
+	  lib/Recall.pm $(INST_MAN3DIR)/Recall.$(MAN3EXT) \
+	  lib/Recall/Schema/DB/Result/Permanent.pm $(INST_MAN3DIR)/Recall::Schema::DB::Result::Permanent.$(MAN3EXT) \
+	  lib/Recall/Controller/Tag.pm $(INST_MAN3DIR)/Recall::Controller::Tag.$(MAN3EXT) 
 
 
 
@@ -447,16 +528,16 @@ manifypods : pure_all  \
 
 # --- MakeMaker installbin section:
 
-EXE_FILES = script/recall_cgi.pl script/recall_create.pl script/recall_fastcgi.pl script/recall_server.pl script/recall_test.pl
+EXE_FILES = script/recall_cgi.pl script/recall_create.pl script/recall_fastcgi.pl script/recall_server.pl script/recall_test.pl script/show_relationships.pl
 
-pure_all :: $(INST_SCRIPT)/recall_server.pl $(INST_SCRIPT)/recall_create.pl $(INST_SCRIPT)/recall_fastcgi.pl $(INST_SCRIPT)/recall_test.pl $(INST_SCRIPT)/recall_cgi.pl
+pure_all :: $(INST_SCRIPT)/recall_server.pl $(INST_SCRIPT)/recall_create.pl $(INST_SCRIPT)/recall_fastcgi.pl $(INST_SCRIPT)/show_relationships.pl $(INST_SCRIPT)/recall_test.pl $(INST_SCRIPT)/recall_cgi.pl
 	$(NOECHO) $(NOOP)
 
 realclean ::
 	$(RM_F) \
 	  $(INST_SCRIPT)/recall_server.pl $(INST_SCRIPT)/recall_create.pl \
-	  $(INST_SCRIPT)/recall_fastcgi.pl $(INST_SCRIPT)/recall_test.pl \
-	  $(INST_SCRIPT)/recall_cgi.pl 
+	  $(INST_SCRIPT)/recall_fastcgi.pl $(INST_SCRIPT)/show_relationships.pl \
+	  $(INST_SCRIPT)/recall_test.pl $(INST_SCRIPT)/recall_cgi.pl 
 
 $(INST_SCRIPT)/recall_server.pl : script/recall_server.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
 	$(NOECHO) $(RM_F) $(INST_SCRIPT)/recall_server.pl
@@ -475,6 +556,12 @@ $(INST_SCRIPT)/recall_fastcgi.pl : script/recall_fastcgi.pl $(FIRST_MAKEFILE) $(
 	$(CP) script/recall_fastcgi.pl $(INST_SCRIPT)/recall_fastcgi.pl
 	$(FIXIN) $(INST_SCRIPT)/recall_fastcgi.pl
 	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)/recall_fastcgi.pl
+
+$(INST_SCRIPT)/show_relationships.pl : script/show_relationships.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
+	$(NOECHO) $(RM_F) $(INST_SCRIPT)/show_relationships.pl
+	$(CP) script/show_relationships.pl $(INST_SCRIPT)/show_relationships.pl
+	$(FIXIN) $(INST_SCRIPT)/show_relationships.pl
+	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)/show_relationships.pl
 
 $(INST_SCRIPT)/recall_test.pl : script/recall_test.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
 	$(NOECHO) $(RM_F) $(INST_SCRIPT)/recall_test.pl
@@ -811,7 +898,7 @@ $(MAKE_APERL_FILE) : $(FIRST_MAKEFILE) pm_to_blib
 TEST_VERBOSE=0
 TEST_TYPE=test_$(LINKTYPE)
 TEST_FILE = test.pl
-TEST_FILES = t/01app.t t/02pod.t t/03podcoverage.t
+TEST_FILES = t/01app.t t/02pod.t t/03podcoverage.t t/controller__.t t/controller_Admin.t t/controller_Blog.t t/controller_Tag.t t/model_DB.t t/view_TT.t
 TESTDB_SW = -d
 
 testdb :: testdb_$(LINKTYPE)
@@ -843,10 +930,12 @@ ppd :
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Action::RenderView" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Plugin::ConfigLoader" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Plugin::Markdown" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Plugin::Static::Simple" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Runtime" VERSION="5.90016" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Config::General" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Moose::" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Text::Markdown" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="namespace::autoclean" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="i486-linux-gnu-thread-multi-5.10" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <CODEBASE HREF="" />' >> $(DISTNAME).ppd
@@ -858,8 +947,24 @@ ppd :
 
 pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  lib/Recall/Controller/Admin.pm blib/lib/Recall/Controller/Admin.pm \
+	  lib/Recall/Schema/DB/Result/Tag.pm blib/lib/Recall/Schema/DB/Result/Tag.pm \
+	  lib/Recall/Schema/DB/ResultSet/DocumentsToTag.pm blib/lib/Recall/Schema/DB/ResultSet/DocumentsToTag.pm \
+	  lib/Recall/Schema/DB/ResultSet/Document.pm blib/lib/Recall/Schema/DB/ResultSet/Document.pm \
 	  lib/Recall/Controller/Root.pm blib/lib/Recall/Controller/Root.pm \
-	  lib/Recall.pm blib/lib/Recall.pm 
+	  lib/Recall/Slug.pm blib/lib/Recall/Slug.pm \
+	  lib/Recall/Controller/Blog.pm blib/lib/Recall/Controller/Blog.pm \
+	  lib/Recall/Model/DB.pm blib/lib/Recall/Model/DB.pm \
+	  lib/Recall/Controller/Tag.pm blib/lib/Recall/Controller/Tag.pm \
+	  lib/Recall/Schema/DB/Result/Version.pm blib/lib/Recall/Schema/DB/Result/Version.pm \
+	  lib/Recall/Schema/DB/Result/DocumentsToTag.pm blib/lib/Recall/Schema/DB/Result/DocumentsToTag.pm \
+	  lib/Recall/View/TT.pm blib/lib/Recall/View/TT.pm \
+	  lib/Recall/URI.pm blib/lib/Recall/URI.pm \
+	  lib/Recall/Schema/DB.pm blib/lib/Recall/Schema/DB.pm \
+	  lib/Recall/Schema/DB/Result/Document.pm blib/lib/Recall/Schema/DB/Result/Document.pm \
+	  lib/Recall/Schema/DB/ResultSet/Tag.pm blib/lib/Recall/Schema/DB/ResultSet/Tag.pm \
+	  lib/Recall.pm blib/lib/Recall.pm \
+	  lib/Recall/Schema/DB/Result/Permanent.pm blib/lib/Recall/Schema/DB/Result/Permanent.pm 
 	$(NOECHO) $(TOUCH) pm_to_blib
 
 

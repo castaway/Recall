@@ -1,5 +1,20 @@
 #!/usr/bin/env perl
 
+# # # Working dev Apache configuration
+# DocumentRoot  /home/david/prog/recall/http_root
+# ServerName recall.local
+# ErrorLog /home/david/prog/recall/logs/error.log
+# CustomLog /home/david/prog/recall/logs/access.log combined
+# SetHandler fcgid-script
+# Options +ExecCGI
+# Alias / /home/david/prog/recall/Recall/script/recall_fastcgi.pl/
+
+use lib qw[
+    /home/david/perl5/lib/perl5/i486-linux-gnu-thread-multi
+    /home/david/perl5/lib/perl5
+    /home/david/prog/recall/Recall/lib
+];
+
 use Catalyst::ScriptRunner;
 Catalyst::ScriptRunner->run('Recall', 'FastCGI');
 
