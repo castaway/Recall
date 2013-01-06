@@ -63,15 +63,38 @@ Show blog entries for year
 sub year :Path :Args(1) {
   my ( $self, $c, $year ) = @_;
   my $dt_start = DateTime->new(year => $year);
+  # Redirect to cannonical URI
+  my $cannonical = $c->uri_for(
+            $self->action_for('year'),
+            [ split '-', $dt_start->strftime("%Y") ]
+        );
+  if ($c->request->uri ne $cannonical) {
+    $c->response->redirect($cannonical, 301);
+    return;
+  }
+  $c->stash->{cannonical} = $cannonical;
+
+  # Get data
   my $dt_end = $dt_start->clone->add( years => 1, seconds => -1 );
   $c->stash->{range} = { start => $dt_start, end => $dt_end };
   $c->forward('period');
+
+  # Get metadata about nearby data
   foreach my $key (keys %{$c->stash->{nearby}}) {
     my $date = $c->stash->{nearby}{$key}->first_published->edited;
-    my $value = { text => $date->year, uri => $c->uri_for($self->action_for('year'), [ $date->strftime("%Y") ]) };
+    my $value = {
+        text => $date->strftime("%Y"),
+        uri => $c->uri_for(
+            $self->action_for('year'),
+            [ split '-', $date->strftime("%Y") ]
+        )
+    };
     $c->stash->{nearby}{$key} = $value;
   }
+
+  # Add a title
   $c->stash->{title} = $dt_start->strftime("Entries for %Y");
+  $c->stash->{period_length} = "year";
 }
 
 =head2 month
@@ -83,9 +106,24 @@ Show blog entries for month
 sub month :Path :Args(2) {
   my ( $self, $c, $year, $month ) = @_;
   my $dt_start = DateTime->new(year => $year, month => $month );
+
+  # Redirect to cannonical URI
+  my $cannonical = $c->uri_for(
+            $self->action_for('month'),
+            [ split '-', $dt_start->strftime("%Y-%m") ]
+        );
+  if ($c->request->uri ne $cannonical) {
+    $c->response->redirect($cannonical, 301);
+    return;
+  }
+  $c->stash->{cannonical} = $cannonical;
+
+  # Get data
   my $dt_end = $dt_start->clone->add( months => 1, seconds => -1 );
   $c->stash->{range} = { start => $dt_start, end => $dt_end };
   $c->forward('period');
+
+  # Get metadata about nearby data
   foreach my $key (keys %{$c->stash->{nearby}}) {
     my $date = $c->stash->{nearby}{$key}->first_published->edited;
     my $value = {
@@ -97,7 +135,10 @@ sub month :Path :Args(2) {
     };
     $c->stash->{nearby}{$key} = $value;
   }
+
+  # Add a title
   $c->stash->{title} = $dt_start->strftime("Entries for %B %Y");
+  $c->stash->{period_length} = "month";
 }
 
 =head2 day
@@ -109,21 +150,39 @@ Show blog entries for day
 sub day :Path :Args(3) {
   my ( $self, $c, $year, $month, $day ) = @_;
   my $dt_start = DateTime->new(year => $year, month => $month, day => $day );
+  
+  # Redirect to cannonical URI
+  my $cannonical = $c->uri_for(
+            $self->action_for('day'),
+            [ split '-', $dt_start->strftime("%Y-%m-%d") ]
+        );
+  if ($c->request->uri ne $cannonical) {
+    $c->response->redirect($cannonical, 301);
+    return;
+  }
+  $c->stash->{cannonical} = $cannonical;
+  
+  # Get data
   my $dt_end = $dt_start->clone->add( days => 1, seconds => -1 );
   $c->stash->{range} = { start => $dt_start, end => $dt_end };
   $c->forward('period');
+
+  # Get metadata about nearby data
   foreach my $key (keys %{$c->stash->{nearby}}) {
     my $date = $c->stash->{nearby}{$key}->first_published->edited;
     my $value = { 
         text => $date->strftime("%a. %d %B %Y"), 
         uri => $c->uri_for(
-            $self->action_for('year'),
+            $self->action_for('day'),
             [ split '-', $date->strftime("%Y-%m-%d") ]
         )
     };
     $c->stash->{nearby}{$key} = $value;
   }
+
+  # Add a title
   $c->stash->{title} = $dt_start->strftime("Entries for %a. %d %B %Y");
+  $c->stash->{period_length} = "day";
 }
 
 
@@ -151,6 +210,7 @@ sub entry :Path :Args(4) {
     $c->response->redirect($cannonical, 301);
     return;
   }
+  $c->stash->{cannonical} = $cannonical;
 
   my $published = $document->first_published;
   # my $edited = $document->last_edited;
