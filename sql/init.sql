@@ -32,6 +32,7 @@ document_id INTEGER UNSIGNED NOT NULL,
 edited DATETIME NOT NULL,
 title VARCHAR(255),
 source TEXT,
+html TEXT,
 PRIMARY KEY (version_id)
 ) ENGINE=InnoDB;
 

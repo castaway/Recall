@@ -54,6 +54,11 @@ __PACKAGE__->table("Versions");
   data_type: 'text'
   is_nullable: 1
 
+=head2 html
+
+  data_type: 'text'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -80,6 +85,8 @@ __PACKAGE__->add_columns(
   "title",
   { data_type => "varchar", is_nullable => 1, size => 255 },
   "source",
+  { data_type => "text", is_nullable => 1 },
+  "html",
   { data_type => "text", is_nullable => 1 },
 );
 __PACKAGE__->set_primary_key("version_id");
@@ -132,21 +139,46 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-25 09:17:49
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:faudqZy9Yl0kc0xr6re+Ag
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2013-01-06 18:30:41
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:9K8Pj9Tl8Z01JkukOPl89A
 
 use Text::Markdown 'markdown';
 
-=head2 html
+=head2 HTML caching
 
-Gets an HTML version of the source of the version
+Update the HTML column when the source column is updated
 
 =cut
 
-sub html {
-  my $self = shift;
-  return markdown($self->source);
-}
+# Update the cache of HTML if the source on the version changes
+# (This won't usually happen as the source is usually only set
+#  at creation time).
+around source => sub {
+    my ($orig, $self) = (shift, shift);
+
+    if (@_) {
+      my $markdown = $_[0];
+      $self->html(markdown($markdown));
+    }
+    $self->$orig(@_);
+};
+
+# Cache the HTML if we haven't generated any before
+around html => sub {
+    my ($orig, $self) = (shift, shift);
+    if (@_) {
+        return $self->$orig(@_);
+    } else {
+        my $html = $self->$orig(@_);
+        unless ($html) {
+            $html = markdown($self->source);
+            $self->$orig($html);
+            $self->update;
+        }
+        return $html;
+    }
+    
+};
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
