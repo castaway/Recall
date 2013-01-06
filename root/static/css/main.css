@@ -83,8 +83,7 @@ body {
 }
 
 .header-container,
-.footer-container,
-.main aside {
+.footer-container {
     background: #f16529;
 }
 
@@ -134,12 +133,12 @@ nav a:hover {
 .main article h1 {
     font-size: 2em;
 }
-
+/*
 .main aside {
     color: white;
     padding: 0px 5% 10px;
 }
-
+*/
 .footer-container footer {
     color: white;
     padding: 20px 0;
@@ -217,7 +216,7 @@ nav a:hover {
    ==================== */
 
     .header-container,
-    .main aside {
+    /* .main aside */{
         -webkit-box-shadow: 0 5px 10px #aaa;
            -moz-box-shadow: 0 5px 10px #aaa;
                 box-shadow: 0 5px 10px #aaa;
@@ -240,7 +239,7 @@ nav a:hover {
     WIDE: Main
    ============ */
 
-    .main .content {
+    /*.main .content {
         float: left;
         width: 57%;
     }
@@ -248,7 +247,7 @@ nav a:hover {
     .main aside {
         float: right;
         width: 28%;
-    }
+    }*/
 }
 
 @media only screen and (min-width: 1140px) {

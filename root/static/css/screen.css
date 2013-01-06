@@ -31,11 +31,12 @@ article header h1 + p {
     margin-top: 0;
 }
 
+article + article {
+    border-top: solid #f16529 2px;
+}
+
 footer.wrapper :target {
     background: white;
     outline: dotted 1px blue;
 }
 
-article + article {
-    border-top: solid #f16529 2px;
-}
