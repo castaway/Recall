@@ -50,6 +50,12 @@ foreach my $entry (@article_entries) {
 
 	my $perm = $path;
 	$perm =~ s!index.html$!!;
+
+    my $slug = $perm;
+    $slug =~ s!/+$!!; # Remove trailing slashes
+    if ($slug =~ m!/!) { # If there are any slashes left
+        $slug =~ s!^.*/!!; # Remove everything before the last slash
+    }
     
 	my $published;
     try {
@@ -59,7 +65,7 @@ foreach my $entry (@article_entries) {
 
     my @tags = uniq( map { $_ = lc $_; s/\s*$//g; s/^\s*//g; $_ } split ',', $meta->keywords );
 
-    my $doc = $documents->create({ slug => $perm });
+    my $doc = $documents->create({ slug => $slug });
     my $ver = $doc->create_related('versions', { 
 			edited => $published, 
 			title => $title, 
