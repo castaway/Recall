@@ -3,23 +3,59 @@
 	<head>
 		<meta chatset="utf-8"/>
 		<title>Edit document</title>
+        <style>
+        textarea, input { 
+            font-family: monospace !important;
+        }
+
+        label, label span {
+            display: block;
+        }
+
+        input, textarea {
+            margin-left: 2em;
+        }
+        </style>
 	</head>
 	<body>
 		<h1>Edit document</h1>
 		<form method="post">
 			<div>
-				<label>Title
+				<label><span>Title</span>
 					<input name="title" value="[% title | html %]">
 				</label>
 			</div>
 			<div>
-				<label>Document
-					<textarea name="source">[% source | html %]</textarea>
+				<label><span>Document</span>
+					<textarea rows=8 cols=60 name="source">[% source | html %]</textarea>
 				</label>
 			</div>
 			<input type="submit" value="Save">
 			<input type="submit" name="publish" value="Save and Publish">
 			<input type="submit" name="preview" value="Preview">
 		</form>
+        <script src="http://yui.yahooapis.com/3.8.0/build/yui/yui-min.js"></script>
+        <script>
+            YUI().use('node', 'event', function (Y) {
+
+                function resize(e) {
+                    var length = this.get('value').length;
+                    var target = Math.ceil(length / this.get('cols'));
+                    target += this.get('value').match(/\n/g).length;
+
+                    if (!length) {
+                        length = 1;
+                    }
+                    this.set(
+                        'rows',
+                        target
+                    );
+                }
+
+                var textarea = Y.one('textarea[name=source]');
+                textarea.on(['keyup', 'change', 'paste'], resize);
+                resize.call(textarea);
+            });
+        </script>
 	</body>
 </html>
