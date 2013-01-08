@@ -1,13 +1,23 @@
 #!/usr/bin/env perl
 
 # # # Working dev Apache configuration
-# DocumentRoot  /home/david/prog/recall/http_root
-# ServerName recall.local
-# ErrorLog /home/david/prog/recall/logs/error.log
-# CustomLog /home/david/prog/recall/logs/access.log combined
-# SetHandler fcgid-script
-# Options +ExecCGI
-# Alias / /home/david/prog/recall/Recall/script/recall_fastcgi.pl/
+# <VirtualHost *:80>
+#         DocumentRoot  /home/david/prog/recall/http_root
+#         ServerName recall.local
+#         ErrorLog /home/david/prog/recall/logs/error.log
+#         CustomLog /home/david/prog/recall/logs/access.log combined
+
+#         SetHandler fcgid-script
+#         Options +ExecCGI
+#         SetEnv PERL5LIB /home/david/perl5/lib/perl5/i486-linux-gnu-thread-multi:/home/david/perl5/lib/perl5:/home/david/prog/recall/Recall/lib
+#         #Alias /static/ "home/david/prog/recall/Recall/static/"
+#         AliasMatch ^/(^static|^favicon/).*$ /home/david/prog/recall/Recall/script/recall_fastcgi.pl/
+
+#         <Location /static/>
+#                 SetHandler default-handler
+#         </Location>
+
+# </VirtualHost>
 
 use lib qw[
     /home/david/perl5/lib/perl5/i486-linux-gnu-thread-multi
