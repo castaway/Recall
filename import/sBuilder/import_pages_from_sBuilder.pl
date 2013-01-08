@@ -36,6 +36,9 @@ foreach my $entry (@article_entries) {
     my $path = $entry->path;
 	my $domain = $entry->domain;
 
+    next if $path =~ m!/errors/.*html!;
+    next if $path =~ m!disablecss/archive-version-1!; # I can't be bothered supporting this any longer. Maybe I'll redirect to achive.org when I do my redirect script!
+
 	say $path;
 
 	my $meta = SBuilder::DataSource::MetaData->find($id);;
