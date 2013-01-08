@@ -287,24 +287,30 @@ sub entry :Path :Args(4) {
     return;
   }
   $c->stash->{canonical} = $canonical;
+  $c->stash->{document} = $document;
+  $c->forward('render_entry');
+}
 
-  my $published = $document->first_published;
-  # my $edited = $document->last_edited;
+sub render_entry :Private {
+    my ($self, $c) = @_;
+    my $document = $c->stash->{document};
+    my $published = $document->first_published;
+    # my $edited = $document->last_edited;
 
-  # Populate the template
-  $c->stash->{title} = $document->title;
-  $c->stash->{date} = {
+    # Populate the template
+    $c->stash->{title} = $document->title;
+    $c->stash->{date} = {
     published => $self->template_ready_date($c, $published->edited)
-  };
-  # my $edited_time = $edited->edited->strftime("%a. %d %B %Y");
-  # if ($edited_time ne $c->stash->{date}{published}{human}) {
-  #   $c->stash->{date}{edited} = {
-  #       human => $edited_time,
-  #       iso => $edited->edited->strftime("%Y-%m-%d"),
-  #   };
-  # }
-  $c->stash->{body} = $document->html;
-  $c->stash->{template} = 'blog/entry.tt';
+    };
+    # my $edited_time = $edited->edited->strftime("%a. %d %B %Y");
+    # if ($edited_time ne $c->stash->{date}{published}{human}) {
+    #   $c->stash->{date}{edited} = {
+    #       human => $edited_time,
+    #       iso => $edited->edited->strftime("%Y-%m-%d"),
+    #   };
+    # }
+    $c->stash->{body} = $document->html;
+    $c->stash->{template} = 'blog/entry.tt';
 }
 
 =head2 get_url_for_document
@@ -317,6 +323,15 @@ sub get_url_for_document :Private {
     # TODO: Get this to format the numbers correctly. 
     # TODO: Get entry() to run content through this to check if the URI is canonical or not
     my ($self, $c, $document) = @_;
+
+    my $static = $document->permanent;
+    if ($static) {
+        $static = $static->url;
+        $static =~ s!^/!!;
+        return $c->uri_for(
+                    $c->controller('Root')->action_for('default')
+                ) . $static;
+    }
 
     my $date = $document->first_published->edited;
     return $c->uri_for(

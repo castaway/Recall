@@ -61,13 +61,8 @@ sub default :Path {
     unless ($live) {
     	$c->detach('not_found');
     }
-
-    # TODO - figure out cannonical URI for page and redirect to it if we aren't on it already
-
-    # Populate the template
-    $c->stash->{title} = $live->title;
-	$c->stash->{body} = $c->markdown->markdown($live->source);
-	$c->stash->{template} = 'page.tt';
+    $c->stash->{document} = $document;
+    $c->forward('Blog', 'render_entry');
 }
 
 =head2 not_found
