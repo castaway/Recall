@@ -116,6 +116,12 @@ sub edit :Path('document/edit') :Args(1) {
 			$document->live($version);
 			$document->update;
 		}
+        if ($post{index_tag}) {
+            my ($tag) = $c->model("DB::Tag")->find($post{index_tag});
+            $tag->about_document($document);
+            $tag->update;
+
+        }
 	}
 
 	$c->stash->{id} = $document_id;
@@ -130,10 +136,16 @@ sub edit :Path('document/edit') :Args(1) {
 			$c->stash->{title} = $latest->title;
 			$c->stash->{source} = $latest->source;
 		}
+        my @tags = $c->model("DB::Tag")->search(undef, { order_by => { -asc => 'name' }});
+        my ($about_document_for) = $document->tag->name;
+        $c->stash->{tags} = [map { 
+                { 
+                    name => $_->name,
+                    selected => ($_->name eq $about_document_for)
+                } 
+            } @tags];
 	}
-
 	# Things to add later
-		# tags
 		# revert to old versions
 }
 

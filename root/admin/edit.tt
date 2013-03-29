@@ -12,8 +12,12 @@
             display: block;
         }
 
-        input, textarea {
+        input, textarea, select {
             margin-left: 2em;
+        }
+
+        .null {
+            font-style: italic;
         }
         </style>
 	</head>
@@ -30,10 +34,22 @@
 					<textarea rows=8 cols=60 name="source">[% source | html %]</textarea>
 				</label>
 			</div>
+            <div>
+                <label><span>Tag that this document will serve as an index page for</span>
+                    <select name="index_tag">
+                            <option value="" class="null">This page is not a tag index</option>
+                        [% FOREACH tag IN tags %]
+                            <option[% IF tag.selected %] selected[% END %]>[% tag.name | html %]</option>
+                        [% END %]
+                    </select>
+                </label>
+            </div>
 			<input type="submit" value="Save">
 			<input type="submit" name="publish" value="Save and Publish">
 			<input type="submit" name="preview" value="Preview">
 		</form>
+
+
         <script src="http://yui.yahooapis.com/3.8.0/build/yui/yui-min.js"></script>
         <script>
             YUI().use('node', 'event', function (Y) {
