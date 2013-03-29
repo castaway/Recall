@@ -28,7 +28,7 @@ sub get_first_published_between {
       }
     },
     {
-      join => 'first_published',
+      prefetch => ['first_published', 'live', 'permanent', 'tag'] 
     });
 }
 
