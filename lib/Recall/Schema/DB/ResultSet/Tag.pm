@@ -15,7 +15,10 @@ sub with_document_count {
   $self->search({},
     {
       '+columns' => 
-        { document_count => $self->correlate('documents_to_tags')->related_resultset('document')->is_published->count_rs->as_query }
+        { 
+            document_count => 
+                $self->correlate('documents_to_tags')->related_resultset('document')->published->count_rs->as_query 
+        }
     }
   );
 }

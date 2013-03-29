@@ -59,7 +59,9 @@ sub specific_tag :Path :Args(1) {
     my ($tag_result) = $c->model("DB::Tag")->search(
     	{ 'name' => $tag },
     	{ 
-    		prefetch => { documents_to_tags => 'document' } 
+    		prefetch => [
+                { documents_to_tags => 'document' },
+            ]
     	}
     );
     
