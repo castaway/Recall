@@ -1,6 +1,8 @@
 [% WRAPPER 'include/page.tt' 
 	title=title %]
 
+[% html %]
+
 <ul>
 [% FOREACH document IN documents %]
 	<li>

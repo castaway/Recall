@@ -59,12 +59,18 @@ sub specific_tag :Path :Args(1) {
     my ($tag_result) = $c->model("DB::Tag")->search(
     	{ 'name' => $tag },
     	{ 
-    		prefetch => { documents_to_tags => [
-                { 'document' => 'live' },
-                { 'document' => 'first_published' },
-                { 'document' => 'permanent' },
-                ]
-            },
+    		prefetch => [
+                {
+                    'about_document' => 'live'
+                },
+                { 
+                    documents_to_tags => [
+                        { 'document' => 'live' },
+                        { 'document' => 'first_published' },
+                        { 'document' => 'permanent' },
+                    ]
+                }
+            ],
             order_by => {
                 -desc => 'first_published.edited'
             }
@@ -78,8 +84,17 @@ sub specific_tag :Path :Args(1) {
     		}
     	} $tag_result->documents;
 
-	$c->stash->{title} = $tag;
+    $c->stash->{title} = $tag;
     $c->stash->{documents} = \@documents;
+
+    my $tag_index = $tag_result->about_document;
+
+    if ($tag_index) {
+        $c->stash->{title} = $tag_index->title;
+        $c->stash->{html} = $tag_index->html;
+    }
+
+	
 
 }
 
