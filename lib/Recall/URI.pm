@@ -15,6 +15,7 @@ sub uri {
 
 	# Figure out what kind of document we are. Current options are:
 	# * Page
+    # * Tag
 	# * Blog (default)
 
 	if ($d->permanent) {
@@ -23,7 +24,12 @@ sub uri {
 		return $c->uri_for(
 			$c->controller("Root")->action_for('default')
 		) . $local;
-	} else {
+	} elsif ($d->tag) {
+        return $c->uri_for(
+            $c->controller("Tag")->action_for('specific_tag'),
+            $d->tag->name
+        );
+    } else {
 		return $c->uri_for(
 			$c->controller("Blog")->action_for('entry'), 
 			[ 

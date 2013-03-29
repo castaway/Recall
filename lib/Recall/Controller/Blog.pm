@@ -39,7 +39,7 @@ sub index :Path :Args(0) {
     $c->forward('recent');
 }
 
-=head2 Blog homepage
+=head2 Blog Atom Feed
 
 =cut
 
@@ -324,20 +324,23 @@ sub get_url_for_document :Private {
     # TODO: Get entry() to run content through this to check if the URI is canonical or not
     my ($self, $c, $document) = @_;
 
-    my $static = $document->permanent;
-    if ($static) {
-        $static = $static->url;
-        $static =~ s!^/!!;
-        return $c->uri_for(
-                    $c->controller('Root')->action_for('default')
-                ) . $static;
-    }
+    use Recall::URI;
+    return Recall::URI->new( catalyst => $c, document => $document )->uri
 
-    my $date = $document->first_published->edited;
-    return $c->uri_for(
-        $self->action_for('entry'), 
-        [ (split '-', $date->strftime("%Y-%m-%d")), $document->slug ]
-    );
+    # my $static = $document->permanent;
+    # if ($static) {
+    #     $static = $static->url;
+    #     $static =~ s!^/!!;
+    #     return $c->uri_for(
+    #                 $c->controller('Root')->action_for('default')
+    #             ) . $static;
+    # }
+
+    # my $date = $document->first_published->edited;
+    # return $c->uri_for(
+    #     $self->action_for('entry'), 
+    #     [ (split '-', $date->strftime("%Y-%m-%d")), $document->slug ]
+    # );
 }
 
 =head2 template_ready_date
