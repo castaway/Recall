@@ -120,7 +120,18 @@ sub edit :Path('document/edit') :Args(1) {
             my ($tag) = $c->model("DB::Tag")->find($post{index_tag});
             $tag->about_document($document);
             $tag->update;
+        }
 
+        my @updated_tags = map { s/^\s*//; s/\s*$//; $_ } split(',', $post{tags} || "");
+        my $tag_rs = $c->model("DB::Tag");
+        $document->set_tags([map {
+            $tag_rs->find_or_create({name => $_});
+        } @updated_tags]);
+
+        my ($tag) = $c->model("DB::Tag")->find($post{index_tag});
+        if ($tag) {
+            $tag->about_document($document);
+            $tag->update;
         }
 	}
 
@@ -136,12 +147,15 @@ sub edit :Path('document/edit') :Args(1) {
 			$c->stash->{title} = $latest->title;
 			$c->stash->{source} = $latest->source;
 		}
+
+        $c->stash->{my_tags} = join(", ", (map { $_->name } $document->tags));
+
         my @tags = $c->model("DB::Tag")->search(undef, { order_by => { -asc => 'name' }});
-        my ($about_document_for) = $document->tag->name;
-        $c->stash->{tags} = [map { 
+        my ($about_document_for) = $document->tag->name if ($document->tag);
+        $c->stash->{all_tags} = [map { 
                 { 
                     name => $_->name,
-                    selected => ($_->name eq $about_document_for)
+                    selected => ($about_document_for && $_->name eq $about_document_for)
                 } 
             } @tags];
 	}

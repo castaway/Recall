@@ -19,6 +19,41 @@
         .null {
             font-style: italic;
         }
+
+        .yui3-taglistentry-holder {
+            display: block;
+            list-style: none;
+            margin: 0 0 0 2em;
+            padding: 0;
+        }
+
+        .yui3-taglistentry-holder input {
+            margin: 0;
+        }
+
+        .yui3-taglistentry-holder li {
+            display: inline-block;
+            border: solid black 1px;
+            border-radius: 2px;
+            list-style: none;
+            margin: 2px;
+            padding: 2px;
+        }
+
+        .yui3-taglistentry-holder li span {
+            display: inline-block;
+            margin: 0 3px;
+        }
+
+        .yui3-taglistentry-holder li .yui3-taglistentry-text {
+            font-weight: bold;
+        }
+
+        .yui3-taglistentry-holder li .yui3-icon {
+            font-size: 0.8em;
+            font-family: sans-serif;
+        }
+
         </style>
 	</head>
 	<body>
@@ -38,10 +73,15 @@
                 <label><span>Tag that this document will serve as an index page for</span>
                     <select name="index_tag">
                             <option value="" class="null">This page is not a tag index</option>
-                        [% FOREACH tag IN tags %]
+                        [% FOREACH tag IN all_tags %]
                             <option[% IF tag.selected %] selected[% END %]>[% tag.name | html %]</option>
                         [% END %]
                     </select>
+                </label>
+            </div>
+            <div>
+                <label><span>Tags</span>
+                    <input name="tags" value="[% my_tags | html %]">
                 </label>
             </div>
 			<input type="submit" value="Save">
@@ -52,6 +92,12 @@
 
         <script src="http://yui.yahooapis.com/3.8.0/build/yui/yui-min.js"></script>
         <script>
+            YUI({
+                gallery: 'gallery-2011.03.23-22-20'
+            }).use('gallery-taglist', function(Y) {
+              Y.one('input[name=tags]').plug(Y.taglist);
+            });
+
             YUI().use('node', 'event', function (Y) {
 
                 function resize(e) {
