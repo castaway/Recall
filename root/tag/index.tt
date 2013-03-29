@@ -1,10 +1,17 @@
-[% WRAPPER 'include/page.tt' 
-	title="Tags"
+[% PROCESS 'common.tt';
+   WRAPPER 'index.tt'
+    article_title = "Tags"
 %]
 
-<h2>All tags</h2>
+<article>
+    <style scoped>
+    [% cloud_css %]
+    </style>
+    <h2>All tags</h2>
+    [% cloud %]
+</article>
 
-<ul>
+<!--<ul>
 [% FOREACH tag IN all_tags %]
 	<li>
 		<a href="[% tag.url | html %]">
@@ -13,6 +20,6 @@
 		([% tag.document_count %])
 	</li>
 [% END %]
-</ul>
+</ul>-->
 
 [% END %]

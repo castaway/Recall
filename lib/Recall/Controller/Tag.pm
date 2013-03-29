@@ -5,6 +5,7 @@ use namespace::autoclean;
 BEGIN {extends 'Catalyst::Controller'; }
 
 use Recall::URI;
+use HTML::TagCloud;
 
 =head1 NAME
 
@@ -30,19 +31,34 @@ sub index :Path :Args(0) {
 
     my @tags = $c->model("DB::Tag")->with_document_count->all();
 
+    my $cloud = HTML::TagCloud->new;
+    for my $tag (@tags) {
+        my $count = $tag->get_column('document_count');
+        my $name = $tag->name;
+        if ($count > 1) {
+            $cloud->add(
+                $name, 
+                $c->uri_for($self->action_for('specific_tag'), [ $name ]),
+                $count
+            );
+        }
+    }
 
-    my @all_tags = grep 
-    	{ 
-    		$_->{document_count} > 1
-    	} map {
-    		{
-    			name => $_->name,
-    			document_count => $_->get_column('document_count'),
-    			url => $c->uri_for($self->action_for('specific_tag'), [ $_->name ])
-    		}
-    	} @tags;
+    $c->stash->{cloud} = $cloud->html;
+    $c->stash->{cloud_css} = $cloud->css;
 
-    $c->stash->{all_tags} = \@all_tags;
+    # my @all_tags = grep 
+    # 	{ 
+    # 		$_->{document_count} > 1
+    # 	} map {
+    # 		{
+    # 			name => $_->name,
+    # 			document_count => $_->get_column('document_count'),
+    # 			url => $c->uri_for($self->action_for('specific_tag'), [ $_->name ])
+    # 		}
+    # 	} @tags;
+
+    # $c->stash->{all_tags} = \@all_tags;
     
 }
 
