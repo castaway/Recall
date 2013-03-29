@@ -59,20 +59,24 @@ sub specific_tag :Path :Args(1) {
     my ($tag_result) = $c->model("DB::Tag")->search(
     	{ 'name' => $tag },
     	{ 
-    		prefetch => [
-                { documents_to_tags => 'document' },
-            ]
+    		prefetch => { documents_to_tags => [
+                { 'document' => 'live' },
+                { 'document' => 'first_published' },
+                { 'document' => 'permanent' },
+                ]
+            },
+            order_by => {
+                -desc => 'first_published.edited'
+            }
     	}
     );
-    
+
     my @documents = map { 
     		{ 
     			title => $_->title,
     			url => Recall::URI->new( catalyst => $c, document => $_ )->uri
     		}
-    	} $tag_result->documents->newest_first;
-
-
+    	} $tag_result->documents;
 
 	$c->stash->{title} = $tag;
     $c->stash->{documents} = \@documents;
