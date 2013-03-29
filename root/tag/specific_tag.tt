@@ -1,16 +1,24 @@
-[% WRAPPER 'include/page.tt' 
-	title=title %]
+[% PROCESS 'common.tt';
+   WRAPPER 'index.tt'
+    article_title = title
+%]
+    <article>
+        <header>
+            <h1>[% title | html %]</h1>
+            [%# TODO: Add a summary paragraph if one exists %]
+        </header>
 
 [% html %]
 
-<ul>
-[% FOREACH document IN documents %]
-	<li>
-		<a href="[% document.url | html %]">
-			[% document.title | html %]
-		</a>
-	</li>
-[% END %]
-</ul>
+        <ul>
+        [% FOREACH document IN documents %]
+        	<li>
+        		<a href="[% document.url | html %]">
+        			[% document.title | html %]
+        		</a>
+        	</li>
+        [% END %]
+        </ul>
 
+    </article>
 [% END %]
