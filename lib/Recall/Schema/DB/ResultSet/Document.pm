@@ -51,7 +51,8 @@ sub get_next_and_previous {
     },
     {
       join => 'first_published',
-      order_by => { -asc => 'first_published.edited' }
+      order_by => { -asc => 'first_published.edited' },
+      prefetch => ['first_published', 'live']
     })->next;
 
     my $previous = $self->search({
@@ -60,7 +61,8 @@ sub get_next_and_previous {
     },
     {
       join => 'first_published',
-      order_by => { -desc => 'first_published.edited' }
+      order_by => { -desc => 'first_published.edited' },
+      prefetch => ['first_published', 'live']
     })->next;
 
     my %result;

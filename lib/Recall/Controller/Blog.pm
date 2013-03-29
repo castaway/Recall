@@ -118,7 +118,6 @@ sub period :Private {
   my $dt_start = $c->stash->{range}{start};
   my $dt_end = $c->stash->{range}{end};
   my @documents = $c->model("DB::Document")->get_first_published_between($dt_start, $dt_end);
-  my %nearby = $c->model("DB::Document")->get_next_and_previous($dt_start, $dt_end);
   my @documents_data = map {
         {
             title => $_->title,
@@ -126,6 +125,7 @@ sub period :Private {
         };
     } @documents;
   $c->stash->{documents} = \@documents_data;
+  my %nearby = $c->model("DB::Document")->get_next_and_previous($dt_start, $dt_end);
   $c->stash->{nearby} = \%nearby;
 }
 
