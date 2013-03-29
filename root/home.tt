@@ -1,0 +1,19 @@
+[% PROCESS 'common.tt';
+   WRAPPER 'index.tt'
+%]
+
+    <header>
+        <h1>The Personal Website of David Dorward</h1>
+        <p>A software developer working in London and living in Kent who likes standards, plays with toy soldiers and wears hats.</p>
+    </header>
+
+    <p>There was a time when someone on the forefront of the web would have a
+    homepage, and that was it. That was then. This is now. This page pulls
+    together content I post in various places across the web.</p>
+
+    <article>
+        
+    </article>
+
+    
+[% END %]

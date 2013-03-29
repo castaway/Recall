@@ -1,3 +1,16 @@
+body {
+    font-family: Lato,Calibri,Trebuchet MS,Helvetica,sans-serif;
+    line-height: 1.8;
+}
+
+blockquote {
+    font-weight: lighter;
+}
+
+h1, h2, h3, h4, strong, b {
+    font-weight: bolder;
+}
+
 pre, code, kbd, samp {
     font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
 }
@@ -20,7 +33,7 @@ pre {
 }
 
 .content footer {
-    border: solid #f16529 2px;
+    border: solid #4082BF 2px;
 }
 
 footer h1 {
@@ -40,7 +53,7 @@ article header h1 + p {
 }
 
 article + article {
-    border-top: solid #f16529 2px;
+    border-top: solid #4082BF 2px;
 }
 
 footer.wrapper :target {
@@ -60,7 +73,7 @@ footer.wrapper li {
     padding: 0;
     list-style: none;
     line-height: 1.2;
-    background: #e44d26;
+    background: #136498;
 }
 
 footer.wrapper ul {
