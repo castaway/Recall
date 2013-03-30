@@ -286,6 +286,7 @@ sub entry :Path :Args(4) {
     $c->response->redirect($canonical, 301);
     return;
   }
+
   $c->stash->{canonical} = $canonical;
   $c->stash->{document} = $document;
   $c->forward('render_entry');
@@ -296,12 +297,17 @@ sub render_entry :Private {
     my $document = $c->stash->{document};
     my $published = $document->first_published;
     # my $edited = $document->last_edited;
+    my @tags = map { {
+         name => $_->name,
+         url => $c->uri_for($c->controller("Tag")->action_for('specific_tag'), [ $_->name ])
+        } } $document->tags; 
 
     # Populate the template
     $c->stash->{title} = $document->title;
     $c->stash->{date} = {
-    published => $self->template_ready_date($c, $published->edited)
+        published => $self->template_ready_date($c, $published->edited)
     };
+    $c->stash->{tags} = \@tags;
     # my $edited_time = $edited->edited->strftime("%a. %d %B %Y");
     # if ($edited_time ne $c->stash->{date}{published}{human}) {
     #   $c->stash->{date}{edited} = {

@@ -33,7 +33,27 @@ pre {
 }
 
 .content footer {
-    border: solid #4082BF 2px;
+    border-top: solid #4082BF 2px;
+}
+
+.content footer * {
+    display: inline-block; 
+    vertical-align: middle;
+    margin: 0;
+    padding: 0;
+}
+
+.content footer li {
+    margin-left: 0.75em;
+}
+
+.content footer li a {
+    padding: 2px 4px;
+}
+
+.content footer li a:hover {
+    background: #136498;
+    color: white;
 }
 
 footer h1 {
