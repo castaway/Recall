@@ -30,16 +30,18 @@ sub uri {
             $d->tag->name
         );
     } else {
+        my $date = $d->first_published->edited;
 		return $c->uri_for(
 			$c->controller("Blog")->action_for('entry'), 
-			[ 
-				$d->first_published->edited->year,
-				$d->first_published->edited->month,
-				$d->first_published->edited->day,
-				$d->slug
-			]
+            [ 
+                (split '-', $date->strftime("%Y-%m-%d")),
+                $d->slug 
+            ]
 		);
 	}
 }
 
 1;
+  
+    
+    
