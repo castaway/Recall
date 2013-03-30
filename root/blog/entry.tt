@@ -5,10 +5,15 @@
     <article>
         <header>
             <h1>[% title | html %]</h1>
+            [% IF date.edited %]
+            <p>First published on [% PROCESS time_element dt=date.published %]</p>
+            <p>Updated on [% PROCESS time_element dt=date.edited suppress_link="1" %]</p>
+            [% ELSE %]
             <p>Published on [% PROCESS time_element dt=date.published %]</p>
-            [%# TODO: Add a summary paragraph if one exists %]
+            [% END %]
         </header>
         [% body %]
+        [% IF tags %]
         <footer>
             <h1>Tags</h1>
             <ul>
@@ -17,5 +22,6 @@
                 [% END %]
             </ul>
         </footer>
+        [% END %]
     </article>
 [% END %]

@@ -6,9 +6,13 @@
     [% END -%]
 [% END -%]
 [% BLOCK time_element -%]
+[% UNLESS suppress_link %]
 <a href="[% dt.uri | html %]">
+[% END %]
     <time datetime="[% dt.iso | html %]">
         [% dt.human | html %]
     </time>
+[% UNLESS suppress_link %]
 </a>
+[% END %]
 [% END -%]

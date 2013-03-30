@@ -304,9 +304,12 @@ sub render_entry :Private {
 
     # Populate the template
     $c->stash->{title} = $document->title;
+    my $published = $self->template_ready_date($c, $published->edited);
+    my $edited = $self->template_ready_date($c, $document->live->edited);
     $c->stash->{date} = {
-        published => $self->template_ready_date($c, $published->edited)
+        published => $published
     };
+    $c->stash->{date}{edited} = $edited unless ($published->{human} eq $edited->{human});
     $c->stash->{tags} = \@tags;
     # my $edited_time = $edited->edited->strftime("%a. %d %B %Y");
     # if ($edited_time ne $c->stash->{date}{published}{human}) {
