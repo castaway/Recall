@@ -1,21 +1,36 @@
+use utf8;
 package Recall::Schema::DB::Result::Tag;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+Recall::Schema::DB::Result::Tag
+
+=cut
 
 use strict;
 use warnings;
 
 use Moose;
 use MooseX::NonMoose;
-use namespace::autoclean;
+use MooseX::MarkAsMethods autoclean => 1;
 extends 'DBIx::Class::Core';
+
+=head1 COMPONENTS LOADED
+
+=over 4
+
+=item * L<DBIx::Class::InflateColumn::DateTime>
+
+=back
+
+=cut
 
 __PACKAGE__->load_components("InflateColumn::DateTime");
 
-=head1 NAME
-
-Recall::Schema::DB::Result::Tag
+=head1 TABLE: C<Tags>
 
 =cut
 
@@ -50,25 +65,34 @@ __PACKAGE__->add_columns(
     is_nullable => 1,
   },
 );
-__PACKAGE__->set_primary_key("name");
-__PACKAGE__->add_unique_constraint("about_document_id", ["about_document_id"]);
 
-=head1 RELATIONS
+=head1 PRIMARY KEY
 
-=head2 documents_to_tags
+=over 4
 
-Type: has_many
+=item * L</name>
 
-Related object: L<Recall::Schema::DB::Result::DocumentsToTag>
+=back
 
 =cut
 
-__PACKAGE__->has_many(
-  "documents_to_tags",
-  "Recall::Schema::DB::Result::DocumentsToTag",
-  { "foreign.tag_id" => "self.name" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
+__PACKAGE__->set_primary_key("name");
+
+=head1 UNIQUE CONSTRAINTS
+
+=head2 C<about_document_id>
+
+=over 4
+
+=item * L</about_document_id>
+
+=back
+
+=cut
+
+__PACKAGE__->add_unique_constraint("about_document_id", ["about_document_id"]);
+
+=head1 RELATIONS
 
 =head2 about_document
 
@@ -85,14 +109,39 @@ __PACKAGE__->belongs_to(
   {
     is_deferrable => 1,
     join_type     => "LEFT",
-    on_delete     => "CASCADE",
-    on_update     => "CASCADE",
+    on_delete     => "RESTRICT",
+    on_update     => "RESTRICT",
   },
 );
 
+=head2 documents_to_tags
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-27 12:44:52
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:lSB0Kpy3OKjrHWXYzexLNg
+Type: has_many
+
+Related object: L<Recall::Schema::DB::Result::DocumentsToTag>
+
+=cut
+
+__PACKAGE__->has_many(
+  "documents_to_tags",
+  "Recall::Schema::DB::Result::DocumentsToTag",
+  { "foreign.tag_id" => "self.name" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 documents
+
+Type: many_to_many
+
+Composing rels: L</documents_to_tags> -> document
+
+=cut
+
+__PACKAGE__->many_to_many("documents", "documents_to_tags", "document");
+
+
+# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-04-01 21:09:44
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:3v1Idg/D8951D8XAtoQquQ
 
 __PACKAGE__->many_to_many( documents => 'documents_to_tags', 'document' );
 

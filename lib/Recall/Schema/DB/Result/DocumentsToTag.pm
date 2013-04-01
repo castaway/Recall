@@ -1,21 +1,36 @@
+use utf8;
 package Recall::Schema::DB::Result::DocumentsToTag;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+Recall::Schema::DB::Result::DocumentsToTag
+
+=cut
 
 use strict;
 use warnings;
 
 use Moose;
 use MooseX::NonMoose;
-use namespace::autoclean;
+use MooseX::MarkAsMethods autoclean => 1;
 extends 'DBIx::Class::Core';
+
+=head1 COMPONENTS LOADED
+
+=over 4
+
+=item * L<DBIx::Class::InflateColumn::DateTime>
+
+=back
+
+=cut
 
 __PACKAGE__->load_components("InflateColumn::DateTime");
 
-=head1 NAME
-
-Recall::Schema::DB::Result::DocumentsToTag
+=head1 TABLE: C<Documents_To_Tags>
 
 =cut
 
@@ -57,6 +72,19 @@ __PACKAGE__->add_columns(
     is_nullable => 0,
   },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</tag_id>
+
+=item * L</document_id>
+
+=back
+
+=cut
+
 __PACKAGE__->set_primary_key("tag_id", "document_id");
 
 =head1 RELATIONS
@@ -92,8 +120,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2012-08-27 12:44:52
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:e/lV8tXi7E+aLx2kzC3Sag
+# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-04-01 21:09:44
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:5iIrKACDykDt5i8xKPWvKg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -1,21 +1,36 @@
+use utf8;
 package Recall::Schema::DB::Result::Version;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+Recall::Schema::DB::Result::Version
+
+=cut
 
 use strict;
 use warnings;
 
 use Moose;
 use MooseX::NonMoose;
-use namespace::autoclean;
+use MooseX::MarkAsMethods autoclean => 1;
 extends 'DBIx::Class::Core';
+
+=head1 COMPONENTS LOADED
+
+=over 4
+
+=item * L<DBIx::Class::InflateColumn::DateTime>
+
+=back
+
+=cut
 
 __PACKAGE__->load_components("InflateColumn::DateTime");
 
-=head1 NAME
-
-Recall::Schema::DB::Result::Version
+=head1 TABLE: C<Versions>
 
 =cut
 
@@ -89,23 +104,34 @@ __PACKAGE__->add_columns(
   "html",
   { data_type => "text", is_nullable => 1 },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</version_id>
+
+=back
+
+=cut
+
 __PACKAGE__->set_primary_key("version_id");
 
 =head1 RELATIONS
 
-=head2 documents_live
+=head2 document
 
-Type: has_many
+Type: belongs_to
 
 Related object: L<Recall::Schema::DB::Result::Document>
 
 =cut
 
-__PACKAGE__->has_many(
-  "documents_live",
+__PACKAGE__->belongs_to(
+  "document",
   "Recall::Schema::DB::Result::Document",
-  { "foreign.live_id" => "self.version_id" },
-  { cascade_copy => 0, cascade_delete => 0 },
+  { document_id => "document_id" },
+  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
 );
 
 =head2 documents_first_publisheds
@@ -123,24 +149,24 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 document
+=head2 documents_lives
 
-Type: belongs_to
+Type: has_many
 
 Related object: L<Recall::Schema::DB::Result::Document>
 
 =cut
 
-__PACKAGE__->belongs_to(
-  "document",
+__PACKAGE__->has_many(
+  "documents_lives",
   "Recall::Schema::DB::Result::Document",
-  { document_id => "document_id" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { "foreign.live_id" => "self.version_id" },
+  { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2013-01-06 18:30:41
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:9K8Pj9Tl8Z01JkukOPl89A
+# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-04-01 21:09:44
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2wKF5GycWC63t2NAa1dn9A
 
 use Text::Markdown 'markdown';
 
