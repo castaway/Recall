@@ -13,12 +13,24 @@ requires 'Catalyst::Runtime' => '5.90016';
 requires 'Catalyst::Plugin::ConfigLoader';
 requires 'Catalyst::Plugin::Static::Simple';
 requires 'Catalyst::Plugin::Markdown';
+requires 'Catalyst::Plugin::StackTrace';
 requires 'Text::Markdown';
 requires 'HTML::TagCloud';
 requires 'Catalyst::Action::RenderView';
 requires 'Moose';
 requires 'namespace::autoclean';
 requires 'Catalyst::View::XML::Feed';
+requires 'Catalyst::View::TT';
+requires 'Catalyst::Model::DBIC::Schema';
+requires 'Catalyst::Restarter';
+requires 'MooseX::NonMoose';
+requires 'DBIx::Class::Helper::ResultSet::CorrelateRelationship';
+requires 'DBIx::Class::Schema::Loader';
+requires 'MooseX::MarkAsMethods';
+requires 'DBD::mysql';
+requires 'File::Slurp';
+requires 'Class::Trigger';
+requires 'DBIx::ContextualFetch';
 requires 'Config::General'; # This should reflect the config file format you've chosen
                  # See Catalyst::Plugin::ConfigLoader for supported formats
 test_requires 'Test::More' => '0.88';

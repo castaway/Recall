@@ -1,2 +1,5 @@
 /import/sBuilder/cache.json
 .DS_Store
+pm_to_blib
+/Makefile
+Makefile

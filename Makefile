@@ -1,7 +1,7 @@
 # This Makefile is for the Recall extension to perl.
 #
 # It was generated automatically by MakeMaker version
-# 6.62 (Revision: 66200) from the contents of
+# 6.64 (Revision: 66400) from the contents of
 # Makefile.PL. Don't edit this file, edit Makefile.PL instead.
 #
 #       ANY CHANGES MADE HERE WILL BE LOST!
@@ -13,14 +13,15 @@
 
 #     ABSTRACT => q[Catalyst based application]
 #     AUTHOR => [q[David Dorward,,,]]
-#     BUILD_REQUIRES => { Test::More=>q[0.88], ExtUtils::MakeMaker=>q[6.42] }
+#     BUILD_REQUIRES => { Test::More=>q[0.88], ExtUtils::MakeMaker=>q[6.36] }
 #     CONFIGURE_REQUIRES => {  }
 #     DISTNAME => q[Recall]
-#     EXE_FILES => [q[script/recall_cgi.pl], q[script/recall_create.pl], q[script/recall_fastcgi.pl], q[script/recall_server.pl], q[script/recall_test.pl], q[script/show_relationships.pl]]
+#     EXE_FILES => [q[script/cache_life_feed.pl], q[script/recall_cgi.pl], q[script/recall_create.pl], q[script/recall_fastcgi.pl], q[script/recall_server.pl], q[script/recall_test.pl], q[script/show_relationships.pl]]
 #     LICENSE => q[perl]
 #     NAME => q[Recall]
 #     NO_META => q[1]
-#     PREREQ_PM => { namespace::autoclean=>q[0], Catalyst::Plugin::Static::Simple=>q[0], Catalyst::Plugin::Markdown=>q[0], ExtUtils::MakeMaker=>q[6.42], Catalyst::Plugin::ConfigLoader=>q[0], Catalyst::Action::RenderView=>q[0], Test::More=>q[0.88], Config::General=>q[0], Catalyst::Runtime=>q[5.90016], Text::Markdown=>q[0], Moose=>q[0] }
+#     PREREQ_PM => { Catalyst::Plugin::Markdown=>q[0], Catalyst::Plugin::ConfigLoader=>q[0], HTML::TagCloud=>q[0], MooseX::NonMoose=>q[0], DBIx::Class::Helper::ResultSet::CorrelateRelationship=>q[0], Config::General=>q[0], DBIx::Class::Schema::Loader=>q[0], Text::Markdown=>q[0], Moose=>q[0], MooseX::MarkAsMethods=>q[0], File::Slurp=>q[0], DBIx::ContextualFetch=>q[0], Catalyst::View::TT=>q[0], namespace::autoclean=>q[0], Catalyst::Plugin::Static::Simple=>q[0], ExtUtils::MakeMaker=>q[6.36], Catalyst::Plugin::StackTrace=>q[0], Catalyst::Action::RenderView=>q[0], Test::More=>q[0.88], Catalyst::Model::DBIC::Schema=>q[0], Catalyst::View::XML::Feed=>q[0], DBD::mysql=>q[0], Class::Trigger=>q[0], Catalyst::Restarter=>q[0], Catalyst::Runtime=>q[5.90016] }
+#     TEST_REQUIRES => {  }
 #     VERSION => q[0.01]
 #     VERSION_FROM => q[lib/Recall.pm]
 #     dist => { PREOP=>q[$(PERL) -I. "-MModule::Install::Admin" -e "dist_preop(q($(DISTVNAME)))"] }
@@ -32,7 +33,7 @@
 
 # --- MakeMaker const_config section:
 
-# These definitions are from config.sh (via /usr/lib/perl/5.10/Config.pm).
+# These definitions are from config.sh (via /home/david/perl5/perlbrew/perls/perl-5.16.3/lib/5.16.3/i686-linux/Config.pm).
 # They may have been overridden via Makefile.PL or on the command line.
 AR = ar
 CC = cc
@@ -43,19 +44,19 @@ DLSRC = dl_dlopen.xs
 EXE_EXT = 
 FULL_AR = /usr/bin/ar
 LD = cc
-LDDLFLAGS = -shared -O2 -g -L/usr/local/lib -fstack-protector
+LDDLFLAGS = -shared -O2 -L/usr/local/lib -fstack-protector
 LDFLAGS =  -fstack-protector -L/usr/local/lib
 LIBC = /lib/libc-2.11.3.so
 LIB_EXT = .a
 OBJ_EXT = .o
 OSNAME = linux
-OSVERS = 3.2.0-4-686-pae
+OSVERS = 2.6.32-5-686
 RANLIB = :
-SITELIBEXP = /usr/local/share/perl/5.10.1
-SITEARCHEXP = /usr/local/lib/perl/5.10.1
+SITELIBEXP = /home/david/perl5/perlbrew/perls/perl-5.16.3/lib/site_perl/5.16.3
+SITEARCHEXP = /home/david/perl5/perlbrew/perls/perl-5.16.3/lib/site_perl/5.16.3/i686-linux
 SO = so
-VENDORARCHEXP = /usr/lib/perl5
-VENDORLIBEXP = /usr/share/perl5
+VENDORARCHEXP = 
+VENDORLIBEXP = 
 
 
 # --- MakeMaker constants section:
@@ -77,58 +78,60 @@ INST_BIN = blib/bin
 INST_LIB = blib/lib
 INST_MAN1DIR = blib/man1
 INST_MAN3DIR = blib/man3
-MAN1EXT = 1p
-MAN3EXT = 3pm
+MAN1EXT = 1
+MAN3EXT = 3
 INSTALLDIRS = site
-INSTALL_BASE = /home/david/perl5
 DESTDIR = 
-PREFIX = $(INSTALL_BASE)
-INSTALLPRIVLIB = $(INSTALL_BASE)/lib/perl5
+PREFIX = $(SITEPREFIX)
+PERLPREFIX = /home/david/perl5/perlbrew/perls/perl-5.16.3
+SITEPREFIX = /home/david/perl5/perlbrew/perls/perl-5.16.3
+VENDORPREFIX = 
+INSTALLPRIVLIB = /home/david/perl5/perlbrew/perls/perl-5.16.3/lib/5.16.3
 DESTINSTALLPRIVLIB = $(DESTDIR)$(INSTALLPRIVLIB)
-INSTALLSITELIB = $(INSTALL_BASE)/lib/perl5
+INSTALLSITELIB = /home/david/perl5/perlbrew/perls/perl-5.16.3/lib/site_perl/5.16.3
 DESTINSTALLSITELIB = $(DESTDIR)$(INSTALLSITELIB)
-INSTALLVENDORLIB = $(INSTALL_BASE)/lib/perl5
+INSTALLVENDORLIB = 
 DESTINSTALLVENDORLIB = $(DESTDIR)$(INSTALLVENDORLIB)
-INSTALLARCHLIB = $(INSTALL_BASE)/lib/perl5/i486-linux-gnu-thread-multi
+INSTALLARCHLIB = /home/david/perl5/perlbrew/perls/perl-5.16.3/lib/5.16.3/i686-linux
 DESTINSTALLARCHLIB = $(DESTDIR)$(INSTALLARCHLIB)
-INSTALLSITEARCH = $(INSTALL_BASE)/lib/perl5/i486-linux-gnu-thread-multi
+INSTALLSITEARCH = /home/david/perl5/perlbrew/perls/perl-5.16.3/lib/site_perl/5.16.3/i686-linux
 DESTINSTALLSITEARCH = $(DESTDIR)$(INSTALLSITEARCH)
-INSTALLVENDORARCH = $(INSTALL_BASE)/lib/perl5/i486-linux-gnu-thread-multi
+INSTALLVENDORARCH = 
 DESTINSTALLVENDORARCH = $(DESTDIR)$(INSTALLVENDORARCH)
-INSTALLBIN = $(INSTALL_BASE)/bin
+INSTALLBIN = /home/david/perl5/perlbrew/perls/perl-5.16.3/bin
 DESTINSTALLBIN = $(DESTDIR)$(INSTALLBIN)
-INSTALLSITEBIN = $(INSTALL_BASE)/bin
+INSTALLSITEBIN = /home/david/perl5/perlbrew/perls/perl-5.16.3/bin
 DESTINSTALLSITEBIN = $(DESTDIR)$(INSTALLSITEBIN)
-INSTALLVENDORBIN = $(INSTALL_BASE)/bin
+INSTALLVENDORBIN = 
 DESTINSTALLVENDORBIN = $(DESTDIR)$(INSTALLVENDORBIN)
-INSTALLSCRIPT = $(INSTALL_BASE)/bin
+INSTALLSCRIPT = /home/david/perl5/perlbrew/perls/perl-5.16.3/bin
 DESTINSTALLSCRIPT = $(DESTDIR)$(INSTALLSCRIPT)
-INSTALLSITESCRIPT = $(INSTALL_BASE)/bin
+INSTALLSITESCRIPT = /home/david/perl5/perlbrew/perls/perl-5.16.3/bin
 DESTINSTALLSITESCRIPT = $(DESTDIR)$(INSTALLSITESCRIPT)
-INSTALLVENDORSCRIPT = $(INSTALL_BASE)/bin
+INSTALLVENDORSCRIPT = 
 DESTINSTALLVENDORSCRIPT = $(DESTDIR)$(INSTALLVENDORSCRIPT)
-INSTALLMAN1DIR = $(INSTALL_BASE)/man/man1
+INSTALLMAN1DIR = /home/david/perl5/perlbrew/perls/perl-5.16.3/man/man1
 DESTINSTALLMAN1DIR = $(DESTDIR)$(INSTALLMAN1DIR)
-INSTALLSITEMAN1DIR = $(INSTALL_BASE)/man/man1
+INSTALLSITEMAN1DIR = /home/david/perl5/perlbrew/perls/perl-5.16.3/man/man1
 DESTINSTALLSITEMAN1DIR = $(DESTDIR)$(INSTALLSITEMAN1DIR)
-INSTALLVENDORMAN1DIR = $(INSTALL_BASE)/man/man1
+INSTALLVENDORMAN1DIR = 
 DESTINSTALLVENDORMAN1DIR = $(DESTDIR)$(INSTALLVENDORMAN1DIR)
-INSTALLMAN3DIR = $(INSTALL_BASE)/man/man3
+INSTALLMAN3DIR = /home/david/perl5/perlbrew/perls/perl-5.16.3/man/man3
 DESTINSTALLMAN3DIR = $(DESTDIR)$(INSTALLMAN3DIR)
-INSTALLSITEMAN3DIR = $(INSTALL_BASE)/man/man3
+INSTALLSITEMAN3DIR = /home/david/perl5/perlbrew/perls/perl-5.16.3/man/man3
 DESTINSTALLSITEMAN3DIR = $(DESTDIR)$(INSTALLSITEMAN3DIR)
-INSTALLVENDORMAN3DIR = $(INSTALL_BASE)/man/man3
+INSTALLVENDORMAN3DIR = 
 DESTINSTALLVENDORMAN3DIR = $(DESTDIR)$(INSTALLVENDORMAN3DIR)
 PERL_LIB =
-PERL_ARCHLIB = /usr/lib/perl/5.10
+PERL_ARCHLIB = /home/david/perl5/perlbrew/perls/perl-5.16.3/lib/5.16.3/i686-linux
 LIBPERL_A = libperl.a
 FIRST_MAKEFILE = Makefile
 MAKEFILE_OLD = Makefile.old
 MAKE_APERL_FILE = Makefile.aperl
 PERLMAINCC = $(CC)
-PERL_INC = /usr/lib/perl/5.10/CORE
-PERL = /usr/bin/perl "-Iinc"
-FULLPERL = /usr/bin/perl "-Iinc"
+PERL_INC = /home/david/perl5/perlbrew/perls/perl-5.16.3/lib/5.16.3/i686-linux/CORE
+PERL = /home/david/perl5/perlbrew/perls/perl-5.16.3/bin/perl "-Iinc"
+FULLPERL = /home/david/perl5/perlbrew/perls/perl-5.16.3/bin/perl "-Iinc"
 ABSPERL = $(PERL)
 PERLRUN = $(PERL)
 FULLPERLRUN = $(FULLPERL)
@@ -141,9 +144,9 @@ PERM_DIR = 755
 PERM_RW = 644
 PERM_RWX = 755
 
-MAKEMAKER   = /home/david/perl5/lib/perl5/ExtUtils/MakeMaker.pm
-MM_VERSION  = 6.62
-MM_REVISION = 66200
+MAKEMAKER   = /home/david/perl5/perlbrew/perls/perl-5.16.3/lib/5.16.3/ExtUtils/MakeMaker.pm
+MM_VERSION  = 6.64
+MM_REVISION = 66400
 
 # FULLEXT = Pathname for extension directory (eg Foo/Bar/Oracle).
 # BASEEXT = Basename part of FULLEXT. May be just equal FULLEXT. (eg Oracle)
@@ -182,6 +185,7 @@ MAN3PODS = lib/Recall.pm \
 	lib/Recall/Schema/DB/Result/Tag.pm \
 	lib/Recall/Schema/DB/Result/Version.pm \
 	lib/Recall/Schema/DB/ResultSet/Document.pm \
+	lib/Recall/View/Feed.pm \
 	lib/Recall/View/TT.pm
 
 # Where is the Config information that we are using/depend on
@@ -210,6 +214,7 @@ TO_INST_PM = lib/Recall.pm \
 	lib/Recall/Controller/Root.pm \
 	lib/Recall/Controller/Tag.pm \
 	lib/Recall/Model/DB.pm \
+	lib/Recall/Model/DB.pm.new \
 	lib/Recall/Schema/DB.pm \
 	lib/Recall/Schema/DB/Result/Document.pm \
 	lib/Recall/Schema/DB/Result/DocumentsToTag.pm \
@@ -221,6 +226,7 @@ TO_INST_PM = lib/Recall.pm \
 	lib/Recall/Schema/DB/ResultSet/Tag.pm \
 	lib/Recall/Slug.pm \
 	lib/Recall/URI.pm \
+	lib/Recall/View/Feed.pm \
 	lib/Recall/View/TT.pm
 
 PM_TO_BLIB = lib/Recall/Controller/Admin.pm \
@@ -239,6 +245,8 @@ PM_TO_BLIB = lib/Recall/Controller/Admin.pm \
 	blib/lib/Recall/Controller/Blog.pm \
 	lib/Recall/Model/DB.pm \
 	blib/lib/Recall/Model/DB.pm \
+	lib/Recall/Model/DB.pm.new \
+	blib/lib/Recall/Model/DB.pm.new \
 	lib/Recall/Controller/Tag.pm \
 	blib/lib/Recall/Controller/Tag.pm \
 	lib/Recall/Schema/DB/Result/Version.pm \
@@ -253,6 +261,8 @@ PM_TO_BLIB = lib/Recall/Controller/Admin.pm \
 	blib/lib/Recall/Schema/DB.pm \
 	lib/Recall/Schema/DB/Result/Document.pm \
 	blib/lib/Recall/Schema/DB/Result/Document.pm \
+	lib/Recall/View/Feed.pm \
+	blib/lib/Recall/View/Feed.pm \
 	lib/Recall/Schema/DB/ResultSet/Tag.pm \
 	blib/lib/Recall/Schema/DB/ResultSet/Tag.pm \
 	lib/Recall.pm \
@@ -262,13 +272,13 @@ PM_TO_BLIB = lib/Recall/Controller/Admin.pm \
 
 
 # --- MakeMaker platform_constants section:
-MM_Unix_VERSION = 6.62
+MM_Unix_VERSION = 6.64
 PERL_MALLOC_DEF = -DPERL_EXTMALLOC_DEF -Dmalloc=Perl_malloc -Dfree=Perl_mfree -Drealloc=Perl_realloc -Dcalloc=Perl_calloc
 
 
 # --- MakeMaker tool_autosplit section:
 # Usage: $(AUTOSPLITFILE) FileToSplit AutoDirToSplitInto
-AUTOSPLITFILE = $(ABSPERLRUN)  -e 'use AutoSplit;  autosplit($$ARGV[0], $$ARGV[1], 0, 1, 1)' --
+AUTOSPLITFILE = $(ABSPERLRUN)  -e 'use AutoSplit;  autosplit($$$$ARGV[0], $$$$ARGV[1], 0, 1, 1)' --
 
 
 
@@ -352,8 +362,7 @@ DISTVNAME = Recall-0.01
 
 PASTHRU = LIBPERL_A="$(LIBPERL_A)"\
 	LINKTYPE="$(LINKTYPE)"\
-	PREFIX="$(PREFIX)"\
-	INSTALL_BASE="$(INSTALL_BASE)"
+	PREFIX="$(PREFIX)"
 
 
 # --- MakeMaker special_targets section:
@@ -496,6 +505,7 @@ manifypods : pure_all  \
 	lib/Recall/Controller/Root.pm \
 	lib/Recall/Model/DB.pm \
 	lib/Recall/Controller/Blog.pm \
+	lib/Recall/View/Feed.pm \
 	lib/Recall.pm \
 	lib/Recall/Schema/DB/Result/Permanent.pm \
 	lib/Recall/Controller/Tag.pm
@@ -516,6 +526,7 @@ manifypods : pure_all  \
 	  lib/Recall/Controller/Root.pm $(INST_MAN3DIR)/Recall::Controller::Root.$(MAN3EXT) \
 	  lib/Recall/Model/DB.pm $(INST_MAN3DIR)/Recall::Model::DB.$(MAN3EXT) \
 	  lib/Recall/Controller/Blog.pm $(INST_MAN3DIR)/Recall::Controller::Blog.$(MAN3EXT) \
+	  lib/Recall/View/Feed.pm $(INST_MAN3DIR)/Recall::View::Feed.$(MAN3EXT) \
 	  lib/Recall.pm $(INST_MAN3DIR)/Recall.$(MAN3EXT) \
 	  lib/Recall/Schema/DB/Result/Permanent.pm $(INST_MAN3DIR)/Recall::Schema::DB::Result::Permanent.$(MAN3EXT) \
 	  lib/Recall/Controller/Tag.pm $(INST_MAN3DIR)/Recall::Controller::Tag.$(MAN3EXT) 
@@ -528,16 +539,17 @@ manifypods : pure_all  \
 
 # --- MakeMaker installbin section:
 
-EXE_FILES = script/recall_cgi.pl script/recall_create.pl script/recall_fastcgi.pl script/recall_server.pl script/recall_test.pl script/show_relationships.pl
+EXE_FILES = script/cache_life_feed.pl script/recall_cgi.pl script/recall_create.pl script/recall_fastcgi.pl script/recall_server.pl script/recall_test.pl script/show_relationships.pl
 
-pure_all :: $(INST_SCRIPT)/recall_server.pl $(INST_SCRIPT)/recall_create.pl $(INST_SCRIPT)/recall_fastcgi.pl $(INST_SCRIPT)/show_relationships.pl $(INST_SCRIPT)/recall_test.pl $(INST_SCRIPT)/recall_cgi.pl
+pure_all :: $(INST_SCRIPT)/recall_server.pl $(INST_SCRIPT)/recall_create.pl $(INST_SCRIPT)/recall_fastcgi.pl $(INST_SCRIPT)/cache_life_feed.pl $(INST_SCRIPT)/show_relationships.pl $(INST_SCRIPT)/recall_test.pl $(INST_SCRIPT)/recall_cgi.pl
 	$(NOECHO) $(NOOP)
 
 realclean ::
 	$(RM_F) \
 	  $(INST_SCRIPT)/recall_server.pl $(INST_SCRIPT)/recall_create.pl \
-	  $(INST_SCRIPT)/recall_fastcgi.pl $(INST_SCRIPT)/show_relationships.pl \
-	  $(INST_SCRIPT)/recall_test.pl $(INST_SCRIPT)/recall_cgi.pl 
+	  $(INST_SCRIPT)/recall_fastcgi.pl $(INST_SCRIPT)/cache_life_feed.pl \
+	  $(INST_SCRIPT)/show_relationships.pl $(INST_SCRIPT)/recall_test.pl \
+	  $(INST_SCRIPT)/recall_cgi.pl 
 
 $(INST_SCRIPT)/recall_server.pl : script/recall_server.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
 	$(NOECHO) $(RM_F) $(INST_SCRIPT)/recall_server.pl
@@ -556,6 +568,12 @@ $(INST_SCRIPT)/recall_fastcgi.pl : script/recall_fastcgi.pl $(FIRST_MAKEFILE) $(
 	$(CP) script/recall_fastcgi.pl $(INST_SCRIPT)/recall_fastcgi.pl
 	$(FIXIN) $(INST_SCRIPT)/recall_fastcgi.pl
 	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)/recall_fastcgi.pl
+
+$(INST_SCRIPT)/cache_life_feed.pl : script/cache_life_feed.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
+	$(NOECHO) $(RM_F) $(INST_SCRIPT)/cache_life_feed.pl
+	$(CP) script/cache_life_feed.pl $(INST_SCRIPT)/cache_life_feed.pl
+	$(FIXIN) $(INST_SCRIPT)/cache_life_feed.pl
+	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)/cache_life_feed.pl
 
 $(INST_SCRIPT)/show_relationships.pl : script/show_relationships.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
 	$(NOECHO) $(RM_F) $(INST_SCRIPT)/show_relationships.pl
@@ -724,17 +742,17 @@ ci :
 distmeta : create_distdir metafile
 	$(NOECHO) cd $(DISTVNAME) && $(ABSPERLRUN) -MExtUtils::Manifest=maniadd -e 'exit unless -e q{META.yml};' \
 	  -e 'eval { maniadd({q{META.yml} => q{Module YAML meta-data (added by MakeMaker)}}) }' \
-	  -e '    or print "Could not add META.yml to MANIFEST: $${'\''@'\''}\n"' --
+	  -e '    or print "Could not add META.yml to MANIFEST: $$$${'\''@'\''}\n"' --
 	$(NOECHO) cd $(DISTVNAME) && $(ABSPERLRUN) -MExtUtils::Manifest=maniadd -e 'exit unless -f q{META.json};' \
 	  -e 'eval { maniadd({q{META.json} => q{Module JSON meta-data (added by MakeMaker)}}) }' \
-	  -e '    or print "Could not add META.json to MANIFEST: $${'\''@'\''}\n"' --
+	  -e '    or print "Could not add META.json to MANIFEST: $$$${'\''@'\''}\n"' --
 
 
 
 # --- MakeMaker distsignature section:
 distsignature : create_distdir
 	$(NOECHO) cd $(DISTVNAME) && $(ABSPERLRUN) -MExtUtils::Manifest=maniadd -e 'eval { maniadd({q{SIGNATURE} => q{Public-key signature (added by MakeMaker)}}) } ' \
-	  -e '    or print "Could not add SIGNATURE to MANIFEST: $${'\''@'\''}\n"' --
+	  -e '    or print "Could not add SIGNATURE to MANIFEST: $$$${'\''@'\''}\n"' --
 	$(NOECHO) cd $(DISTVNAME) && $(TOUCH) SIGNATURE
 	cd $(DISTVNAME) && cpansign -s
 
@@ -880,7 +898,7 @@ $(FIRST_MAKEFILE) : Makefile.PL $(CONFIGDEP)
 
 # --- MakeMaker makeaperl section ---
 MAP_TARGET    = perl
-FULLPERL      = /usr/bin/perl
+FULLPERL      = /home/david/perl5/perlbrew/perls/perl-5.16.3/bin/perl
 
 $(MAP_TARGET) :: static $(MAKE_APERL_FILE)
 	$(MAKE) $(USEMAKEFILE) $(MAKE_APERL_FILE) $@
@@ -924,20 +942,34 @@ testdb_static :: testdb_dynamic
 # --- MakeMaker ppd section:
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd :
-	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="0.01">' > $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="$(VERSION)">' > $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <ABSTRACT>Catalyst based application</ABSTRACT>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <AUTHOR>David Dorward,,,</AUTHOR>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Action::RenderView" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Model::DBIC::Schema" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Plugin::ConfigLoader" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Plugin::Markdown" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Plugin::StackTrace" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Plugin::Static::Simple" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Restarter" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::Runtime" VERSION="5.90016" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::View::TT" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Catalyst::View::XML::Feed" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Class::Trigger" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Config::General" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBD::mysql" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBIx::Class::Helper::ResultSet::CorrelateRelationship" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBIx::Class::Schema::Loader" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="DBIx::ContextualFetch" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="File::Slurp" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="HTML::TagCloud" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Moose::" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="MooseX::MarkAsMethods" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="MooseX::NonMoose" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Text::Markdown" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="namespace::autoclean" />' >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="i486-linux-gnu-thread-multi-5.10" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="i686-linux-5.16" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <CODEBASE HREF="" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    </IMPLEMENTATION>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '</SOFTPKG>' >> $(DISTNAME).ppd
@@ -955,6 +987,7 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	  lib/Recall/Slug.pm blib/lib/Recall/Slug.pm \
 	  lib/Recall/Controller/Blog.pm blib/lib/Recall/Controller/Blog.pm \
 	  lib/Recall/Model/DB.pm blib/lib/Recall/Model/DB.pm \
+	  lib/Recall/Model/DB.pm.new blib/lib/Recall/Model/DB.pm.new \
 	  lib/Recall/Controller/Tag.pm blib/lib/Recall/Controller/Tag.pm \
 	  lib/Recall/Schema/DB/Result/Version.pm blib/lib/Recall/Schema/DB/Result/Version.pm \
 	  lib/Recall/Schema/DB/Result/DocumentsToTag.pm blib/lib/Recall/Schema/DB/Result/DocumentsToTag.pm \
@@ -962,6 +995,7 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	  lib/Recall/URI.pm blib/lib/Recall/URI.pm \
 	  lib/Recall/Schema/DB.pm blib/lib/Recall/Schema/DB.pm \
 	  lib/Recall/Schema/DB/Result/Document.pm blib/lib/Recall/Schema/DB/Result/Document.pm \
+	  lib/Recall/View/Feed.pm blib/lib/Recall/View/Feed.pm \
 	  lib/Recall/Schema/DB/ResultSet/Tag.pm blib/lib/Recall/Schema/DB/ResultSet/Tag.pm \
 	  lib/Recall.pm blib/lib/Recall.pm \
 	  lib/Recall/Schema/DB/Result/Permanent.pm blib/lib/Recall/Schema/DB/Result/Permanent.pm 
@@ -975,7 +1009,7 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 
 
 # End.
-# Postamble by Module::Install 1.00
+# Postamble by Module::Install 1.06
 # --- Module::Install::Admin::Makefile section:
 
 realclean purge ::
@@ -1006,5 +1040,20 @@ checkdeps ::
 	$(PERL) Makefile.PL --checkdeps
 
 installdeps ::
-	$(NOECHO) $(NOOP)
+	$(PERL) Makefile.PL --config= --installdeps=Class::Trigger,0,DBIx::ContextualFetch,0
+
+installdeps_notest ::
+	$(PERL) Makefile.PL --config=notest,1 --installdeps=Class::Trigger,0,DBIx::ContextualFetch,0
+
+upgradedeps ::
+	$(PERL) Makefile.PL --config= --upgradedeps=Class::Trigger,0,DBIx::ContextualFetch,0,Test::More,0.88,Catalyst::Runtime,5.90016,Catalyst::Plugin::ConfigLoader,0,Catalyst::Plugin::Static::Simple,0,Catalyst::Plugin::Markdown,0,Catalyst::Plugin::StackTrace,0,Text::Markdown,0,HTML::TagCloud,0,Catalyst::Action::RenderView,0,Moose,0,namespace::autoclean,0,Catalyst::View::XML::Feed,0,Catalyst::View::TT,0,Catalyst::Model::DBIC::Schema,0,Catalyst::Restarter,0,MooseX::NonMoose,0,DBIx::Class::Helper::ResultSet::CorrelateRelationship,0,DBIx::Class::Schema::Loader,0,MooseX::MarkAsMethods,0,DBD::mysql,0,File::Slurp,0,Config::General,0
+
+upgradedeps_notest ::
+	$(PERL) Makefile.PL --config=notest,1 --upgradedeps=Class::Trigger,0,DBIx::ContextualFetch,0,Test::More,0.88,Catalyst::Runtime,5.90016,Catalyst::Plugin::ConfigLoader,0,Catalyst::Plugin::Static::Simple,0,Catalyst::Plugin::Markdown,0,Catalyst::Plugin::StackTrace,0,Text::Markdown,0,HTML::TagCloud,0,Catalyst::Action::RenderView,0,Moose,0,namespace::autoclean,0,Catalyst::View::XML::Feed,0,Catalyst::View::TT,0,Catalyst::Model::DBIC::Schema,0,Catalyst::Restarter,0,MooseX::NonMoose,0,DBIx::Class::Helper::ResultSet::CorrelateRelationship,0,DBIx::Class::Schema::Loader,0,MooseX::MarkAsMethods,0,DBD::mysql,0,File::Slurp,0,Config::General,0
+
+listdeps ::
+	@$(PERL) -le "print for @ARGV" Class::Trigger DBIx::ContextualFetch
+
+listalldeps ::
+	@$(PERL) -le "print for @ARGV" Class::Trigger DBIx::ContextualFetch Test::More Catalyst::Runtime Catalyst::Plugin::ConfigLoader Catalyst::Plugin::Static::Simple Catalyst::Plugin::Markdown Catalyst::Plugin::StackTrace Text::Markdown HTML::TagCloud Catalyst::Action::RenderView Moose namespace::autoclean Catalyst::View::XML::Feed Catalyst::View::TT Catalyst::Model::DBIC::Schema Catalyst::Restarter MooseX::NonMoose DBIx::Class::Helper::ResultSet::CorrelateRelationship DBIx::Class::Schema::Loader MooseX::MarkAsMethods DBD::mysql File::Slurp Config::General
 
