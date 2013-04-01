@@ -70,7 +70,7 @@ document_id INTEGER UNSIGNED NOT NULL,
 PRIMARY KEY (tag_id, document_id)
 ) ENGINE=InnoDB;
 
-ALTER TABLE Documents_To_Tags ADD FOREIGN KEY tag_idxfk (tag_id) REFERENCES Tags (name);
-ALTER TABLE Documents_To_Tags ADD FOREIGN KEY document_idxfk (document_id) REFERENCES Documents (document_id);
+ALTER TABLE Documents_To_Tags ADD FOREIGN KEY tag_idxfk (tag_id) REFERENCES Tags (name) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE Documents_To_Tags ADD FOREIGN KEY document_idxfk (document_id) REFERENCES Documents (document_id)  ON DELETE CASCADE ON UPDATE CASCADE;
 
 
