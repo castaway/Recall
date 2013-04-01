@@ -209,6 +209,28 @@ Edit a tag
 
 sub specific_tag :Path('tag') :Args(1) {
     my ( $self, $c, $name ) = @_;
+    $c->stash->{tag} = $name;
+
+    my %post = %{$c->request->body_parameters};
+    my $action = $post{submit};
+
+    unless ($action) {
+        # Just render the form
+        return;
+    }
+
+    if ($action eq "Delete") {
+        $c->response->redirect(
+            $c->uri_for($self->action_for('tag'))
+        );
+    }
+
+    if ($action eq "Rename") {
+        my $new_name = $post{new_name};
+        $c->response->redirect(
+            $c->uri_for($self->action_for('specific_tag'), [ $new_name ])
+        );
+    }
 }
 
 =head1 AUTHOR
