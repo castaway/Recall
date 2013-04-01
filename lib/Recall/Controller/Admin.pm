@@ -219,7 +219,10 @@ sub specific_tag :Path('tag') :Args(1) {
         return;
     }
 
+    my $name = $post{tag};
+
     if ($action eq "Delete") {
+        $c->model("DB::Tag")->find($name)->delete;
         $c->response->redirect(
             $c->uri_for($self->action_for('tag'))
         );
@@ -227,6 +230,9 @@ sub specific_tag :Path('tag') :Args(1) {
 
     if ($action eq "Rename") {
         my $new_name = $post{new_name};
+        my $orm = $c->model("DB::Tag")->find($name);
+        $orm->name($new_name);
+        $orm->update;
         $c->response->redirect(
             $c->uri_for($self->action_for('specific_tag'), [ $new_name ])
         );
