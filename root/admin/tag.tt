@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta chatset="utf-8"/>
+		<title>Admin tags</title>
+        <style>
+            table, td, th {
+                border-collapse: collapse;
+                padding: 0;
+                border: solid black 1px;
+            }
+
+            th {
+                padding: 1ex;
+            }
+
+            table a {
+                display: block;
+                padding: 1ex;
+            }
+        </style>
+	</head>
+	<body>
+		<h1>Admin tags</h1>
+		<table>
+			<thead>
+				<tr>
+					<th scope="col">Tag</th>
+					<th scope="col">Documents</th>
+				</tr>
+			</thead>
+			<tbody>
+			[% FOREACH tag IN tags %]
+				<tr>
+					<td><a href="[% tag.edit_link | html %]">[% tag.name | html %]</a></td>
+					<td><a href="[% tag.documents_link | html %]">[% tag.count | html %]</a></td>
+				</tr>
+			[% END %]
+			</tbody>
+		</table>
+	</body>
+</html>

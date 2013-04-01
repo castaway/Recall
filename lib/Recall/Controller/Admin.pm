@@ -9,16 +9,13 @@ use DateTime;
 
 =head1 NAME
 
-Recall::Controller::Admin - Catalyst Controller
+Recall::Controller::Admin - Administration pages
 
 =head1 DESCRIPTION
 
-Catalyst Controller.
+Catalyst Controller that provides administration pages for Recall.
 
 =head1 METHODS
-
-=cut
-
 
 =head2 index
 
@@ -180,6 +177,38 @@ sub preview :Private {
 	$c->stash->{title} = $post{title};
 	$c->stash->{body} = $c->markdown->markdown($post{source});
 	$c->stash->{template} = 'admin/preview.tt';
+}
+
+=head2 tag
+
+Select tags for editing
+
+=cut
+
+sub tag :Path('tag') :Args(0) {
+    my ( $self, $c ) = @_;
+    my @tags = map {
+            my $tag = $_;
+            my $name = $tag->name;
+            {
+                count => $tag->get_column('document_count'),
+                name => $name,
+                documents_link => $c->uri_for($c->controller("Tag")->action_for('specific_tag'), [ $name ]),
+                edit_link => $c->uri_for($self->action_for('specific_tag'), [ $name ])
+            }
+
+        } $c->model("DB::Tag")->with_document_count->all();
+    $c->stash->{tags} = \@tags;
+}
+
+=head2 specific_tag
+
+Edit a tag
+
+=cut
+
+sub specific_tag :Path('tag') :Args(1) {
+    my ( $self, $c, $name ) = @_;
 }
 
 =head1 AUTHOR
