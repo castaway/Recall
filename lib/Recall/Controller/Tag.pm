@@ -93,6 +93,10 @@ sub specific_tag :Path :Args(1) {
     	}
     );
 
+    unless ($tag_result) {
+        $c->detach(qw[Root not_found]);
+    }
+
     my @documents = map { 
     		{ 
     			title => $_->title,
