@@ -215,11 +215,8 @@ sub specific_tag :Path('tag') :Args(1) {
     my $action = $post{submit};
 
     unless ($action) {
-        # Just render the form
-        return;
+        return; # Just render the form
     }
-
-    my $name = $post{tag};
 
     if ($action eq "Delete") {
         $c->model("DB::Tag")->find($name)->delete;

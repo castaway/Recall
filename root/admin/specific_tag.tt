@@ -23,7 +23,6 @@
 	<body>
 		<h1>Admin "[% tag | html %]"</h1>
 		<form action="" method="post">
-            <input type="hidden" name="tag" value="[% tag | html %]">
             <input type="submit" name="submit" value="Delete">
             <fieldset>
                 <label>New name <input name="new_name"></label>
