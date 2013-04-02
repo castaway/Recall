@@ -221,8 +221,6 @@ __PACKAGE__->many_to_many("tags", "documents_to_tags", "tag");
 # Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-04-01 21:09:44
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Bb3sVy++Fyp0pjInE6pIvQ
 
-__PACKAGE__->many_to_many( tags => 'documents_to_tags', 'tag' );
-
 =head2 title
 
 Gets the title of the current live version

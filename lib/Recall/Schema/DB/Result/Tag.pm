@@ -143,8 +143,6 @@ __PACKAGE__->many_to_many("documents", "documents_to_tags", "document");
 # Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-04-01 21:09:44
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:3v1Idg/D8951D8XAtoQquQ
 
-__PACKAGE__->many_to_many( documents => 'documents_to_tags', 'document' );
-
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
 1;
