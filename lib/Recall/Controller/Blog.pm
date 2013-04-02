@@ -305,20 +305,13 @@ sub render_entry :Private {
 
     # Populate the template
     $c->stash->{title} = $document->title;
-    my $published = $self->template_ready_date($c, $published->edited);
+    my $published_date = $self->template_ready_date($c, $published->edited);
     my $edited = $self->template_ready_date($c, $document->live->edited);
     $c->stash->{date} = {
-        published => $published
+        published => $published_date
     };
-    $c->stash->{date}{edited} = $edited unless ($published->{human} eq $edited->{human});
+    $c->stash->{date}{edited} = $edited unless ($published_date->{human} eq $edited->{human});
     $c->stash->{tags} = \@tags;
-    # my $edited_time = $edited->edited->strftime("%a. %d %B %Y");
-    # if ($edited_time ne $c->stash->{date}{published}{human}) {
-    #   $c->stash->{date}{edited} = {
-    #       human => $edited_time,
-    #       iso => $edited->edited->strftime("%Y-%m-%d"),
-    #   };
-    # }
     $c->stash->{body} = $document->html;
     $c->stash->{template} = 'blog/entry.tt';
 }
