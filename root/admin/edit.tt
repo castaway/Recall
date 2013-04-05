@@ -88,6 +88,9 @@
 			<input type="submit" name="publish" value="Save and Publish">
 			<input type="submit" name="preview" value="Preview">
 		</form>
+        <form method="post" id="delete">
+            <input type="submit" name="delete" value="Delete">
+        </form>
 
 
         <script src="http://yui.yahooapis.com/3.8.0/build/yui/yui-min.js"></script>
@@ -118,6 +121,15 @@
                 textarea.on(['keyup', 'change', 'paste'], resize);
                 resize.call(textarea);
             });
+
+            YUI().use('node', 'event', function (Y) {
+                Y.one('#delete').on(['submit'], function (e) {
+                    var sure = confirm("Really delete this entry? There is no way back.");
+                    if (!sure) {
+                        e.preventDefault();
+                    }
+                });
+            })
         </script>
 	</body>
 </html>

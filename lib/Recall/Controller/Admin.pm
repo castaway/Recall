@@ -101,8 +101,19 @@ sub edit :Path('document/edit') :Args(1) {
 	my %post = %{$c->request->body_parameters};
 
 	if (%post) {
-		# TODO: CSRF protection	
+        # TODO: CSRF protection 
+        if ($post{delete}) {
+            $document->delete;
+            $document->update;
+            return $c->response->redirect($c->uri_for(
+                    $c->controller('Admin')->action_for('documents')
+                ), 302);
+        } 
+
+
 		$c->detach('preview') if ($post{preview});
+
+
 		my $version = $document->create_related('versions', { 
 			edited => DateTime->now, 
 			title => $post{title}, 
