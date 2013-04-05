@@ -91,12 +91,12 @@ __PACKAGE__->belongs_to(
   "document",
   "Recall::Schema::DB::Result::Document",
   { document_id => "document_id" },
-  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-04-01 21:09:44
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:VgmGazLfO5795kLeme7Ihw
+# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-04-05 08:53:48
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:oAw0DF/7PXbD1B4eEboMQw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -131,7 +131,7 @@ __PACKAGE__->belongs_to(
   "document",
   "Recall::Schema::DB::Result::Document",
   { document_id => "document_id" },
-  { is_deferrable => 1, on_delete => "RESTRICT", on_update => "RESTRICT" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 =head2 documents_first_publisheds
@@ -165,8 +165,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-04-01 21:09:44
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2wKF5GycWC63t2NAa1dn9A
+# Created by DBIx::Class::Schema::Loader v0.07035 @ 2013-04-04 13:50:49
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:EpP7kPwmGz9/jTV5yVCuBg
 
 use Text::Markdown 'markdown';
 

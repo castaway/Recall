@@ -48,10 +48,10 @@ PRIMARY KEY (document_id)
 
 CREATE INDEX url_idx ON Permanent(url);
 
-ALTER TABLE Versions ADD FOREIGN KEY document_id_idxfk (document_id) REFERENCES Documents (document_id);
-ALTER TABLE Documents ADD FOREIGN KEY first_published_version_idxfk (first_published_id) REFERENCES Versions (version_id);
-ALTER TABLE Documents ADD FOREIGN KEY live_version_idxfk (live_id) REFERENCES Versions (version_id);
-ALTER TABLE Permanent ADD FOREIGN KEY document_id_idxfk (document_id) REFERENCES Documents (document_id);
+ALTER TABLE Versions ADD FOREIGN KEY document_id_idxfk_version (document_id) REFERENCES Documents (document_id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE Documents ADD FOREIGN KEY first_published_version_idxfk (first_published_id) REFERENCES Versions (version_id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE Documents ADD FOREIGN KEY live_version_idxfk (live_id) REFERENCES Versions (version_id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE Permanent ADD FOREIGN KEY document_id_idxfk_permanent (document_id) REFERENCES Documents (document_id) ON DELETE CASCADE ON UPDATE CASCADE;;
 
 CREATE TABLE Tags
 (
