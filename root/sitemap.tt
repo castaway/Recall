@@ -1,0 +1,22 @@
+[% PROCESS 'common.tt';
+   WRAPPER 'index.tt'
+   article_title = "Site Map"
+%]
+
+    <article>
+
+    <header>
+        <h1>Site Map</h1>
+        <p>A relatively complete list of documents available on this site.</p>
+    </header>
+
+    <ul>
+        [% FOREACH document IN documents %]
+        <li><a href="[% document.url | html %]">[% document.title | html %]</a></li>
+        [% END %]
+    </ul>
+
+    </article>
+
+    
+[% END %]

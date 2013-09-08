@@ -63,6 +63,35 @@ sub default :Path {
     $c->forward('Blog', 'render_entry');
 }
 
+=head2 sitemap
+
+A list of links to documents on the site
+
+=cut
+
+sub sitemap :Path("sitemap") {
+    my ( $self, $c, @args ) = @_;
+    my @documents = map { 
+        { 
+            title => $_->title,
+            url => Recall::URI->new( catalyst => $c, document => $_ )->uri
+        }
+    } $c->model("DB::Document")->search( 
+        { first_published_id => { "!=" => undef } },
+        { 
+            join => ["first_published", "live"],
+            order_by => "live.title" 
+        }
+    );
+
+
+
+
+
+    $c->stash->{documents} = \@documents;
+
+}
+
 =head2 not_found
 
 A 404 error document
