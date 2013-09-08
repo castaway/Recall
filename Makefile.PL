@@ -9,15 +9,17 @@ use Module::Install::Catalyst; # Complain loudly if you don't have
 name 'Recall';
 all_from 'lib/Recall.pm';
 
+requires 'Moose';
 requires 'Catalyst::Runtime' => '5.90016';
 requires 'Catalyst::Plugin::ConfigLoader';
 requires 'Catalyst::Plugin::Static::Simple';
 requires 'Catalyst::Plugin::Markdown';
 requires 'Catalyst::Plugin::StackTrace';
+requires 'DateTime';
+requires 'DateTime::Format::MySQL';
 requires 'Text::Markdown';
 requires 'HTML::TagCloud';
 requires 'Catalyst::Action::RenderView';
-requires 'Moose';
 requires 'namespace::autoclean';
 requires 'Catalyst::View::XML::Feed';
 requires 'Catalyst::View::TT';
