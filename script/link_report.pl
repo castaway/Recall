@@ -48,6 +48,13 @@ for my $url (keys %results) {
     } elsif ($url !~ m!dorward.me.uk!) {
     # Filter out URIs to non-Dorward domains
         next;
+    } else {
+        my $test = $url;
+        $test =~ s!blog.dorward.me.uk/!drax:3000/blog/!;
+        my $response = $ua->get($test);
+        if ($response->is_success) {
+            next;
+        }
     }
 
     say $url;
