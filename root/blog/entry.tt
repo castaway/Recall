@@ -13,7 +13,7 @@
             [% END %]
         </header>
         [% body %]
-        [% IF tags %]
+        [% IF tags.list.size %]
         <footer>
             <h1>Tags</h1>
             <ul>
