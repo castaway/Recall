@@ -123,3 +123,13 @@ footer.wrapper a:active {
 #elsewhere {
     float: right;
 }
+
+.deprecated {
+    background: #fcc;
+    color: black;
+    padding: 1em 1ex;
+}
+
+.deprecated :first-child {
+    margin-top: 0;
+}
