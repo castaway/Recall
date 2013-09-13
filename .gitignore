@@ -7,3 +7,5 @@ Makefile
 /Recall-0.01.tar.gz
 inc/*
 /MANIFEST
+
+backup*.sql
